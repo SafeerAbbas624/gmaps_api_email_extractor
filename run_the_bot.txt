@@ -1,0 +1,6 @@
+open the folder
+go to address bar or url bar
+ write cmd and hit enter
+
+then terminal or command prompt will open
+write python main.py and hit enter. bot will start running.

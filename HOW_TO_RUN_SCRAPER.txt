@@ -1,0 +1,283 @@
+===============================================================================
+                    HOW TO RUN THE GOOGLE MAPS SCRAPER - STEP BY STEP
+===============================================================================
+
+PREREQUISITES
+=============
+
+Before running the scraper, make sure you have:
+✅ Python installed on your computer
+✅ Google Maps API key set up (see API_SETUP_INSTRUCTIONS.txt)
+✅ API key added to .env file
+✅ Dependencies installed (pip install -r requirements.txt)
+
+STEP 1: PREPARE YOUR DATA
+=========================
+
+1. Open the "input" folder in your scraper directory
+2. Edit "niches.csv":
+   - Open with Excel, Notepad, or any text editor
+   - Add your target business types (one per line)
+   - Example:
+     niche
+     roofers
+     plumbers
+     electricians
+     your_business_type
+
+3. Edit "locations.csv":
+   - Add your target cities and states
+   - Format: city,state
+   - Example:
+     city,state
+     San Diego,CA
+     Los Angeles,CA
+     Your City,ST
+
+4. Save both files
+
+STEP 2: TEST FIRST (RECOMMENDED)
+================================
+
+Always test with a single search before running the full scraper:
+
+Method 1 - Command Line:
+1. Open Command Prompt/PowerShell in scraper folder
+2. Run: python main.py --mode single --niche "roofers" --location "San Diego, CA"
+3. Wait for results (should take 10-30 seconds)
+4. Check if data appears in "output" folder
+
+Method 2 - Windows Batch File:
+1. Double-click "run_scraper.bat"
+2. Choose option "2" (Test single search)
+3. Enter a niche (e.g., "roofers")
+4. Enter a location (e.g., "San Diego, CA")
+5. Press Enter and wait for results
+
+Method 3 - Interactive:
+1. Run: python quick_start.py
+2. Choose option "1" (Run a test search)
+3. Follow the prompts
+
+WHAT TO EXPECT FROM TEST:
+- "Google Maps client initialized successfully"
+- "Searching for: [your search]"
+- "Found X places for query..."
+- "Successfully scraped X businesses"
+- CSV file created in "output" folder
+
+STEP 3: RUN FULL SCRAPER
+========================
+
+Once testing works, run the complete scraper:
+
+Method 1 - Command Line (Recommended):
+1. Open Command Prompt/PowerShell in scraper folder
+2. Run: python main.py --mode continuous
+3. The scraper will start processing all niche/location combinations
+
+Method 2 - Windows Batch File:
+1. Double-click "run_scraper.bat"
+2. Choose option "3" (Start continuous scraping)
+3. Confirm you want to continue
+
+Method 3 - Interactive:
+1. Run: python quick_start.py
+2. Choose option "2" (Start continuous scraping)
+
+STEP 4: MONITOR PROGRESS
+=======================
+
+While the scraper runs, you can monitor progress:
+
+Real-time Console Output:
+- Shows current niche and location being processed
+- Displays number of results found
+- Shows any errors or warnings
+
+Check Progress Files:
+- View "output/progress.json" for current status
+- Check "logs/scraper.log" for detailed logs
+- Monitor "output/scraped_data.csv" for accumulating data
+
+Monitor Progress Commands:
+- Run: python utils.py progress
+- Run: python utils.py stats
+- Or use batch file option "4"
+
+STEP 5: STOPPING THE SCRAPER
+============================
+
+To stop the scraper safely:
+
+1. Press Ctrl+C in the command window
+2. Wait for "Shutting down gracefully..." message
+3. The scraper will save current progress and stop
+
+DO NOT:
+❌ Close the command window directly
+❌ Force-quit the program
+❌ Shut down computer while running
+
+The scraper saves progress automatically, so you can always resume later.
+
+STEP 6: RESUMING SCRAPER
+========================
+
+If the scraper stops (crash, power outage, etc.):
+
+1. Simply run the scraper again: python main.py --mode continuous
+2. It will automatically resume from where it left off
+3. No data will be lost due to crash recovery features
+
+STEP 7: CLEANING DATA
+====================
+
+After scraping is complete (or periodically):
+
+Method 1 - Command Line:
+python main.py --mode cleanup
+
+Method 2 - Batch File:
+1. Double-click "run_scraper.bat"
+2. Choose option "5" (Clean data)
+
+Method 3 - Utility:
+python utils.py clean
+
+This will:
+- Remove duplicate entries (based on phone numbers)
+- Create a final clean CSV file
+- Show statistics about removed duplicates
+
+UNDERSTANDING OUTPUT FILES
+==========================
+
+Your scraper creates several files:
+
+Main Data Files:
+- "output/scraped_data.csv" - Raw scraped data (continuously updated)
+- "output/scraped_data_final.csv" - Clean data without duplicates
+- "output/temp_scraped_data.csv" - Temporary file for crash recovery
+
+Progress Files:
+- "output/progress.json" - Current scraping progress
+- "logs/scraper.log" - Detailed operation logs
+
+Backup Files:
+- "backups/" folder - Automatic timestamped backups
+
+TYPICAL SCRAPING SESSION
+========================
+
+Here's what a normal scraping session looks like:
+
+1. Start: python main.py --mode continuous
+2. Console shows:
+   "Starting continuous scraping for X niches and Y locations"
+   "Scraping: roofers in San Diego, CA"
+   "Found 15 places for query: roofers in San Diego, CA"
+   "Added 15 records to batch"
+   "Scraping: roofers in Los Angeles, CA"
+   ... continues for all combinations
+
+3. Files are updated continuously
+4. Progress is saved after each location
+5. Backups created every 100 records
+
+PERFORMANCE EXPECTATIONS
+========================
+
+Timing (approximate):
+- Single search: 10-30 seconds
+- 100 niche/location combinations: 1-2 hours
+- 1000 combinations: 8-12 hours
+- Large datasets: Can run for days
+
+Rate Limits:
+- 30 requests per minute (built-in safety)
+- 2000 requests per day (configurable)
+- 2-second delays between requests
+
+Data Volume:
+- Typical: 5-20 businesses per search
+- Some locations may have 0 results
+- Popular niches in big cities: 20+ results
+
+TROUBLESHOOTING COMMON ISSUES
+=============================
+
+Issue: "No API key found"
+Fix: Check your .env file is set up correctly
+
+Issue: "No results found"
+Fix: Try different search terms or verify locations exist
+
+Issue: Scraper stops unexpectedly
+Fix: Check logs/scraper.log for errors, restart with same command
+
+Issue: "Rate limit exceeded"
+Fix: Scraper will automatically wait and retry
+
+Issue: Computer goes to sleep
+Fix: Adjust power settings to prevent sleep during operation
+
+Issue: Internet connection lost
+Fix: Scraper will retry automatically when connection returns
+
+BEST PRACTICES
+==============
+
+1. Start Small:
+   - Test with 2-3 niches and 5-10 locations first
+   - Gradually increase to full dataset
+
+2. Monitor Regularly:
+   - Check progress every few hours
+   - Monitor API usage in Google Cloud Console
+   - Watch for any error patterns in logs
+
+3. Backup Data:
+   - Run: python utils.py backup periodically
+   - Keep copies of your clean data files
+
+4. Optimize Performance:
+   - Run during off-peak hours
+   - Ensure stable internet connection
+   - Close unnecessary programs
+
+5. Respect Limits:
+   - Don't modify rate limits aggressively
+   - Stay within Google's usage policies
+   - Monitor costs if exceeding free tier
+
+ADVANCED USAGE
+==============
+
+Custom Configuration:
+- Edit config.py to adjust rate limits, delays, etc.
+- Modify data fields if needed
+- Change file paths and names
+
+Batch Processing:
+- Split large location lists into smaller files
+- Run multiple instances with different data sets
+- Combine results using cleanup function
+
+Integration:
+- Import scraper classes into your own scripts
+- Use individual functions for custom workflows
+- Extend functionality as needed
+
+===============================================================================
+                              HAPPY SCRAPING!
+===============================================================================
+
+Remember:
+- Always test first with single searches
+- Monitor your API usage and costs
+- Keep backups of important data
+- The scraper is designed to run safely for long periods
+
+For detailed API setup, see: API_SETUP_INSTRUCTIONS.txt
+For technical details, see: README.md and USAGE_GUIDE.md

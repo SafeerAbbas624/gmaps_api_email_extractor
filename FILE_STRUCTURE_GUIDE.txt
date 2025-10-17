@@ -1,0 +1,165 @@
+===============================================================================
+                        GOOGLE MAPS SCRAPER - FILE STRUCTURE
+===============================================================================
+
+📁 YOUR SCRAPER FOLDER
+├── 📄 API_SETUP_INSTRUCTIONS.txt      ← DETAILED API KEY SETUP GUIDE
+├── 📄 HOW_TO_RUN_SCRAPER.txt          ← STEP-BY-STEP RUNNING GUIDE
+├── 📄 README.md                       ← Quick overview and features
+├── 📄 USAGE_GUIDE.md                  ← Advanced usage and customization
+├── 📄 FEATURES_CHECKLIST.md           ← All implemented features list
+│
+├── 🔧 CORE SCRAPER FILES
+│   ├── 📄 main.py                     ← Main runner script (START HERE)
+│   ├── 📄 scraper.py                  ← Google Maps API scraper logic
+│   ├── 📄 data_manager.py             ← Data saving and duplicate removal
+│   ├── 📄 config.py                   ← Configuration settings
+│   └── 📄 requirements.txt            ← Python dependencies
+│
+├── 🎮 EASY-TO-USE SCRIPTS
+│   ├── 📄 run_scraper.bat             ← Windows menu interface (DOUBLE-CLICK)
+│   ├── 📄 quick_start.py              ← Interactive setup and operation
+│   ├── 📄 demo.py                     ← Demo without API key needed
+│   └── 📄 utils.py                    ← Data management utilities
+│
+├── 🧪 TESTING
+│   ├── 📄 test_scraper.py             ← Test suite (all tests pass ✅)
+│   └── 📄 setup.py                    ← Automated setup script
+│
+├── 📂 input/                          ← YOUR DATA GOES HERE
+│   ├── 📄 niches.csv                  ← Business types to scrape
+│   └── 📄 locations.csv               ← Cities and states to scrape
+│
+├── 📂 output/                         ← SCRAPED DATA APPEARS HERE
+│   ├── 📄 scraped_data.csv            ← Raw scraped data (continuously updated)
+│   ├── 📄 scraped_data_final.csv      ← Clean data (no duplicates)
+│   ├── 📄 temp_scraped_data.csv       ← Crash recovery file
+│   └── 📄 progress.json               ← Current scraping progress
+│
+├── 📂 logs/                           ← OPERATION LOGS
+│   └── 📄 scraper.log                 ← Detailed operation logs
+│
+├── 📂 backups/                        ← AUTOMATIC BACKUPS
+│   └── 📄 scraped_data_backup_*.csv   ← Timestamped backup files
+│
+└── 🔐 CONFIGURATION
+    ├── 📄 .env                        ← YOUR API KEY GOES HERE (create this)
+    └── 📄 .env.example                ← Template for .env file
+
+===============================================================================
+                              IMPORTANT FILES
+===============================================================================
+
+🚨 MUST READ FIRST:
+📄 API_SETUP_INSTRUCTIONS.txt  - Complete API key setup guide
+📄 HOW_TO_RUN_SCRAPER.txt      - Step-by-step running instructions
+
+🎯 TO START SCRAPING:
+📄 run_scraper.bat             - Double-click for Windows menu
+📄 main.py                     - Command line: python main.py --mode continuous
+
+📝 TO CUSTOMIZE:
+📄 input/niches.csv            - Add your business types here
+📄 input/locations.csv         - Add your cities/states here
+📄 .env                        - Add your API key here (create from .env.example)
+
+📊 TO CHECK RESULTS:
+📄 output/scraped_data_final.csv - Your clean scraped data
+📄 logs/scraper.log             - Detailed operation logs
+📄 output/progress.json         - Current progress status
+
+===============================================================================
+                              QUICK ACTIONS
+===============================================================================
+
+🔧 SETUP:
+1. Read API_SETUP_INSTRUCTIONS.txt
+2. Create .env file with your API key
+3. Edit input/niches.csv and input/locations.csv
+
+🚀 RUN:
+Windows: Double-click run_scraper.bat
+Command: python main.py --mode continuous
+
+📈 MONITOR:
+Check: output/scraped_data.csv (growing data file)
+Logs: logs/scraper.log (detailed operation info)
+Progress: python utils.py progress
+
+🧹 CLEANUP:
+Remove duplicates: python main.py --mode cleanup
+View stats: python utils.py stats
+Create backup: python utils.py backup
+
+===============================================================================
+                              FILE PURPOSES
+===============================================================================
+
+CORE OPERATION:
+main.py          - Orchestrates the entire scraping process
+scraper.py       - Handles Google Maps API calls and data extraction
+data_manager.py  - Manages data saving, backups, and duplicate removal
+config.py        - Centralized settings and configuration
+
+USER INTERFACE:
+run_scraper.bat  - Windows batch file with menu options
+quick_start.py   - Interactive Python script for setup and operation
+demo.py          - Demonstration script (works without API key)
+utils.py         - Command-line utilities for data management
+
+DOCUMENTATION:
+API_SETUP_INSTRUCTIONS.txt - Complete API key setup guide
+HOW_TO_RUN_SCRAPER.txt     - Step-by-step operation guide
+README.md                  - Project overview and quick start
+USAGE_GUIDE.md             - Advanced usage and customization
+FEATURES_CHECKLIST.md      - Complete feature implementation list
+
+DATA FILES:
+input/niches.csv           - Business types to scrape (EDIT THIS)
+input/locations.csv        - Cities and states to scrape (EDIT THIS)
+output/scraped_data.csv    - Raw scraped data (auto-generated)
+output/scraped_data_final.csv - Clean data without duplicates
+.env                       - Your API key storage (CREATE THIS)
+
+SAFETY & RECOVERY:
+output/temp_scraped_data.csv - Temporary file for crash recovery
+output/progress.json         - Progress tracking for resume capability
+backups/*.csv               - Automatic timestamped backups
+logs/scraper.log            - Detailed operation and error logs
+
+TESTING:
+test_scraper.py  - Comprehensive test suite
+setup.py         - Automated setup and testing script
+
+===============================================================================
+                              GETTING STARTED
+===============================================================================
+
+ABSOLUTE BEGINNER PATH:
+1. 📖 Read API_SETUP_INSTRUCTIONS.txt (get your API key)
+2. 📖 Read HOW_TO_RUN_SCRAPER.txt (learn how to run)
+3. 🎮 Double-click run_scraper.bat (Windows) or run python quick_start.py
+4. 🎯 Choose option 1 (demo) to see it working
+5. 🚀 Get API key, then choose option 2 (test) then option 3 (full run)
+
+EXPERIENCED USER PATH:
+1. pip install -r requirements.txt
+2. Copy .env.example to .env, add API key
+3. Edit input/niches.csv and input/locations.csv
+4. python main.py --mode single --niche "test" --location "Test City, ST"
+5. python main.py --mode continuous
+
+===============================================================================
+                              SUPPORT FILES
+===============================================================================
+
+Need help? Check these files in order:
+1. API_SETUP_INSTRUCTIONS.txt - API key problems
+2. HOW_TO_RUN_SCRAPER.txt - Running problems  
+3. logs/scraper.log - Detailed error messages
+4. README.md - General overview
+5. USAGE_GUIDE.md - Advanced configuration
+
+The scraper is designed to be user-friendly with comprehensive documentation
+and multiple ways to run it. Start with the instruction files and you'll be
+scraping in no time!

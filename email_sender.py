@@ -27,9 +27,9 @@ from datetime import datetime, timedelta
 from pathlib import Path
 import threading
 
-# Set up logging with UTF-8 encoding
+# Set up logging with UTF-8 encoding (initially disabled for configuration)
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.CRITICAL,  # Start with CRITICAL to suppress logs during config
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler("email_sender.log", encoding='utf-8'),
@@ -153,19 +153,19 @@ class EmailSender:
         print("\n" + "="*80)
         print("CONFIGURATION".center(80))
         print("="*80 + "\n")
-        
+
         # Get sender email
         self.sender_email = input("📧 Enter your Gmail address: ").strip()
         if not self.sender_email:
             print("❌ Email cannot be empty!")
             return False
-        
+
         # Get sender password
         self.sender_password = input("🔐 Enter your Gmail App Password (or password): ").strip()
         if not self.sender_password:
             print("❌ Password cannot be empty!")
             return False
-        
+
         # Get message
         print("\n📝 Enter the message to send (press Enter twice when done):")
         print("-" * 80)
@@ -181,18 +181,22 @@ class EmailSender:
             else:
                 empty_count = 0
                 lines.append(line)
-        
+
         self.message_content = "\n".join(lines[:-1]) if lines else "Hello,\n\nThis is an automated message from Google Maps Email Scraper."
-        
+
         if not self.message_content.strip():
             print("❌ Message cannot be empty!")
             return False
-        
+
         print("-" * 80)
         print(f"\n✅ Configuration saved!")
         print(f"   Sender: {self.sender_email}")
         print(f"   Message length: {len(self.message_content)} characters")
-        
+
+        # Enable logging after configuration is complete
+        logging.getLogger().setLevel(logging.INFO)
+        logger.info("Configuration completed. Starting email sending...")
+
         return True
     
     def read_scraped_emails(self):

@@ -22,13 +22,12 @@ import os
 import logging
 from datetime import datetime
 
-# Set up logging
+# Set up logging - only to file, not to console
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler("parallel_runner.log", encoding='utf-8'),
-        logging.StreamHandler(sys.stdout)
+        logging.FileHandler("parallel_runner.log", encoding='utf-8')
     ]
 )
 logger = logging.getLogger("ParallelRunner")
@@ -112,6 +111,7 @@ def run_email_sender_process():
 
         logger.info("Starting Email Sender in Process 2...")
         print("[PROCESS 2] 📧 Starting Email Sender...")
+        print("[PROCESS 2] ⏸️  Scraper logs will be paused while you enter configuration...")
 
         # Run email sender as a subprocess
         result = subprocess.run(

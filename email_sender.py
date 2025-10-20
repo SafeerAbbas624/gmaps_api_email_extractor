@@ -193,7 +193,11 @@ class EmailSender:
                 empty_count = 0
                 lines.append(line)
 
-        self.message_content = "\n".join(lines[:-1]) if lines else "Hello,\n\nThis is an automated message from Google Maps Email Scraper."
+        # Remove the last empty line that was added before the second Enter
+        if lines and lines[-1] == "":
+            lines = lines[:-1]
+
+        self.message_content = "\n".join(lines) if lines else "Hello,\n\nThis is an automated message from Google Maps Email Scraper."
 
         if not self.message_content.strip():
             print("❌ Message cannot be empty!")

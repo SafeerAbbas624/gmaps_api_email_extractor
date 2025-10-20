@@ -95,8 +95,6 @@ class ScraperRunner:
             self.logger.info(f"Resuming from niche {niche_index}, location {location_index}")
             self.logger.info(f"Progress: {completed_combinations}/{total_combinations} combinations completed")
             
-            batch_data = []
-            
             while self.running and niche_index < len(niches):
                 niche = niches[niche_index]
                 
@@ -109,17 +107,13 @@ class ScraperRunner:
                         
                         # Scrape data for this niche/location combination
                         scraped_data = self.scraper.scrape_niche_location(niche, location_str)
-                        
+
                         if scraped_data:
-                            batch_data.extend(scraped_data)
-                            self.logger.info(f"Added {len(scraped_data)} records to batch")
+                            self.logger.info(f"Found {len(scraped_data)} records")
+                            # Save immediately to CSV for real-time email sending
+                            self.data_manager.save_batch_data(scraped_data)
                         else:
                             self.logger.info(f"No results for {niche} in {location_str}")
-                        
-                        # Save batch data periodically (save every 5 records for real-time email sending)
-                        if len(batch_data) >= 5:  # Save every 5 records for faster email detection
-                            self.data_manager.save_batch_data(batch_data)
-                            batch_data = []
                         
                         # Update progress
                         location_index += 1
@@ -144,11 +138,7 @@ class ScraperRunner:
                 self.scraper._save_progress()
                 
                 self.logger.info(f"Completed niche: {niche}")
-            
-            # Save any remaining batch data
-            if batch_data:
-                self.data_manager.save_batch_data(batch_data, backup=True)
-            
+
             if self.running:
                 self.logger.info("Scraping completed for all niches and locations!")
             else:

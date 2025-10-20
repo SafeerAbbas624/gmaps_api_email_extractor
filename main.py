@@ -109,9 +109,15 @@ class ScraperRunner:
                         scraped_data = self.scraper.scrape_niche_location(niche, location_str)
 
                         if scraped_data:
-                            self.logger.info(f"Found {len(scraped_data)} records")
-                            # Save immediately to CSV for real-time email sending
-                            self.data_manager.save_batch_data(scraped_data)
+                            # Separate records with valid emails from those without
+                            valid_email_records = [r for r in scraped_data if r.get('email') != 'NOT AVAILABLE']
+                            no_email_records = [r for r in scraped_data if r.get('email') == 'NOT AVAILABLE']
+
+                            self.logger.info(f"Found {len(scraped_data)} records ({len(valid_email_records)} with emails, {len(no_email_records)} without)")
+
+                            # Save records with valid emails immediately for real-time email sending
+                            if valid_email_records:
+                                self.data_manager.save_batch_data(valid_email_records)
                         else:
                             self.logger.info(f"No results for {niche} in {location_str}")
                         

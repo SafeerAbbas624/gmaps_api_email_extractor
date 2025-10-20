@@ -106,7 +106,8 @@ class ScraperRunner:
                         self.logger.info(f"Scraping: {niche} in {location_str}")
                         
                         # Scrape data for this niche/location combination
-                        scraped_data = self.scraper.scrape_niche_location(niche, location_str)
+                        # Pass data_manager so scraper can save emails immediately as they're found
+                        scraped_data = self.scraper.scrape_niche_location(niche, location_str, self.data_manager)
 
                         if scraped_data:
                             # Separate records with valid emails from those without

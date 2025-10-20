@@ -15,7 +15,7 @@ Email: safeerabbas.624@gmail.com
 WhatsApp: +923312378492
 """
 
-import threading
+import subprocess
 import time
 import sys
 import os
@@ -77,85 +77,118 @@ def display_banner():
     logger.info("Parallel Runner started")
 
 
-def run_scraper():
-    """Run the Google Maps scraper"""
+def run_scraper_process():
+    """Run the Google Maps scraper in a separate process"""
     try:
-        logger.info("Starting Google Maps Scraper in Thread 1...")
-        print("\n[THREAD 1] 🔍 Starting Google Maps Scraper...")
-        
-        # Import and run the scraper
-        from main import main as scraper_main
-        scraper_main()
-        
-        logger.info("Google Maps Scraper completed")
-        print("[THREAD 1] ✅ Google Maps Scraper completed")
-    
+        logger.info("Starting Google Maps Scraper in Process 1...")
+        print("\n[PROCESS 1] 🔍 Starting Google Maps Scraper...")
+
+        # Run scraper as a subprocess to avoid signal handler issues
+        result = subprocess.run(
+            [sys.executable, "-c",
+             "from main import main; main()"],
+            cwd=os.getcwd(),
+            capture_output=False
+        )
+
+        if result.returncode == 0:
+            logger.info("Google Maps Scraper completed successfully")
+            print("[PROCESS 1] ✅ Google Maps Scraper completed")
+        else:
+            logger.error(f"Google Maps Scraper exited with code {result.returncode}")
+            print(f"[PROCESS 1] ⚠️  Scraper exited with code {result.returncode}")
+
     except Exception as e:
-        logger.error(f"Error in scraper thread: {e}")
-        print(f"[THREAD 1] ❌ Error: {e}")
+        logger.error(f"Error in scraper process: {e}")
+        print(f"[PROCESS 1] ❌ Error: {e}")
 
 
-def run_email_sender():
-    """Run the email sender"""
+def run_email_sender_process():
+    """Run the email sender in a separate process"""
     try:
         # Wait a bit for scraper to start and create output file
-        print("\n[THREAD 2] ⏳ Waiting for scraper to initialize...")
+        print("\n[PROCESS 2] ⏳ Waiting for scraper to initialize...")
         time.sleep(5)
-        
-        logger.info("Starting Email Sender in Thread 2...")
-        print("[THREAD 2] 📧 Starting Email Sender...")
-        
-        # Import and run the email sender
-        from email_sender import EmailSender
-        sender = EmailSender()
-        sender.run()
-        
-        logger.info("Email Sender completed")
-        print("[THREAD 2] ✅ Email Sender completed")
-    
+
+        logger.info("Starting Email Sender in Process 2...")
+        print("[PROCESS 2] 📧 Starting Email Sender...")
+
+        # Run email sender as a subprocess
+        result = subprocess.run(
+            [sys.executable, "-c",
+             "from email_sender import EmailSender; sender = EmailSender(); sender.run()"],
+            cwd=os.getcwd(),
+            capture_output=False
+        )
+
+        if result.returncode == 0:
+            logger.info("Email Sender completed successfully")
+            print("[PROCESS 2] ✅ Email Sender completed")
+        else:
+            logger.error(f"Email Sender exited with code {result.returncode}")
+            print(f"[PROCESS 2] ⚠️  Email Sender exited with code {result.returncode}")
+
     except Exception as e:
-        logger.error(f"Error in email sender thread: {e}")
-        print(f"[THREAD 2] ❌ Error: {e}")
+        logger.error(f"Error in email sender process: {e}")
+        print(f"[PROCESS 2] ❌ Error: {e}")
 
 
 def main():
     """Main function to run both processes in parallel"""
     display_banner()
-    
+
     print("\n" + "="*80)
     print("PARALLEL EXECUTION MODE".center(80))
     print("="*80 + "\n")
-    
+
     print("📋 Process Information:")
-    print("  • Thread 1: Google Maps Scraper (scrapes emails)")
-    print("  • Thread 2: Email Sender (sends emails)")
+    print("  • Process 1: Google Maps Scraper (scrapes emails)")
+    print("  • Process 2: Email Sender (sends emails)")
     print("  • Both processes run simultaneously")
     print("  • Sender reads from scraper's output file")
+    print("  • Using subprocess for proper signal handling")
     print("\n" + "="*80 + "\n")
-    
-    # Create threads
-    scraper_thread = threading.Thread(target=run_scraper, name="ScraperThread", daemon=False)
-    sender_thread = threading.Thread(target=run_email_sender, name="EmailSenderThread", daemon=False)
-    
-    # Start threads
+
+    # Create processes using subprocess
     print("🚀 Starting parallel execution...\n")
-    scraper_thread.start()
-    sender_thread.start()
-    
+
     try:
-        # Wait for both threads to complete
-        scraper_thread.join()
-        sender_thread.join()
-        
+        # Start scraper process
+        scraper_process = subprocess.Popen(
+            [sys.executable, "-c", "from main import main; main()"],
+            cwd=os.getcwd()
+        )
+
+        # Start email sender process (with delay)
+        time.sleep(5)
+        sender_process = subprocess.Popen(
+            [sys.executable, "-c", "from email_sender import EmailSender; sender = EmailSender(); sender.run()"],
+            cwd=os.getcwd()
+        )
+
+        # Wait for both processes to complete
+        scraper_process.wait()
+        sender_process.wait()
+
         print("\n" + "="*80)
         print("✅ ALL PROCESSES COMPLETED SUCCESSFULLY".center(80))
         print("="*80 + "\n")
         logger.info("All processes completed successfully")
-    
+
     except KeyboardInterrupt:
         print("\n\n⏹️  Parallel execution stopped by user")
         logger.info("Parallel execution stopped by user")
-    
+
+        # Terminate both processes
+        try:
+            scraper_process.terminate()
+            sender_process.terminate()
+            time.sleep(1)
+            scraper_process.kill()
+            sender_process.kill()
+        except:
+            pass
+
     except Exception as e:
         logger.error(f"Error in main: {e}")
         print(f"❌ Error: {e}")

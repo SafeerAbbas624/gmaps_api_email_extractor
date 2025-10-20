@@ -49,6 +49,7 @@ class EmailSender:
         self.sender_email = None
         self.sender_password = None
         self.message_content = None
+        self.email_subject = "Collaborazione autista Londra"  # Default subject
         self.tracking_file = "email_sent_tracking.json"
         self.csv_file = "output/scraped_data.csv"
         self.daily_limit = 500
@@ -149,7 +150,7 @@ class EmailSender:
             logger.error(f"Error saving tracking data: {e}")
     
     def get_input_configuration(self):
-        """Get sender email, password, and message from user"""
+        """Get sender email, password, subject, and message from user"""
         print("\n" + "="*80)
         print("CONFIGURATION".center(80))
         print("="*80 + "\n")
@@ -165,6 +166,16 @@ class EmailSender:
         if not self.sender_password:
             print("❌ Password cannot be empty!")
             return False
+
+        # Get email subject with default option
+        print(f"\n📌 Email Subject (default: '{self.email_subject}'):")
+        print("   Press Enter to use default, or type a custom subject:")
+        custom_subject = input("   ➜ ").strip()
+        if custom_subject:
+            self.email_subject = custom_subject
+            print(f"   ✅ Using custom subject: '{self.email_subject}'")
+        else:
+            print(f"   ✅ Using default subject: '{self.email_subject}'")
 
         # Get message
         print("\n📝 Enter the message to send (press Enter twice when done):")
@@ -191,6 +202,7 @@ class EmailSender:
         print("-" * 80)
         print(f"\n✅ Configuration saved!")
         print(f"   Sender: {self.sender_email}")
+        print(f"   Subject: {self.email_subject}")
         print(f"   Message length: {len(self.message_content)} characters")
 
         # Enable logging after configuration is complete
@@ -225,19 +237,19 @@ class EmailSender:
         """Send email to recipient using SMTP"""
         try:
             msg = MIMEText(self.message_content)
-            msg['Subject'] = 'Important Message from Google Maps'
+            msg['Subject'] = self.email_subject
             msg['From'] = self.sender_email
             msg['To'] = recipient_email
-            
+
             # Connect to Gmail SMTP server
             server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
             server.login(self.sender_email, self.sender_password)
             server.send_message(msg)
             server.quit()
-            
+
             logger.info(f"Email sent successfully to {recipient_email}")
             return True
-        
+
         except smtplib.SMTPAuthenticationError:
             logger.error(f"Authentication failed for {self.sender_email}")
             print("❌ Authentication failed! Check your email and password.")

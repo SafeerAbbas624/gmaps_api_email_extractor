@@ -1,0 +1,28 @@
+{
+  "last_date": "2025-10-21",
+  "sent_today": 4,
+  "total_sent": 4,
+  "failed_count": 0,
+  "sent_emails": [
+    {
+      "email": "info@viaggiatoridelmondo.it",
+      "timestamp": "2025-10-21T02:26:21.724111",
+      "status": "success"
+    },
+    {
+      "email": "info@dovevuoitour.it",
+      "timestamp": "2025-10-21T02:26:28.908159",
+      "status": "success"
+    },
+    {
+      "email": "preventivi@maisonduvoyage.it",
+      "timestamp": "2025-10-21T02:26:35.586655",
+      "status": "success"
+    },
+    {
+      "email": "agenzia@5giornate.it",
+      "timestamp": "2025-10-21T02:26:42.346327",
+      "status": "success"
+    }
+  ]
+}

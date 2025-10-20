@@ -360,8 +360,6 @@ class EmailSender:
         print("="*80 + "\n")
 
         total_sent_this_session = 0
-        no_new_emails_count = 0
-        max_no_new_emails = 60  # If no new emails for 60 checks (about 5 minutes), stop
 
         while True:
             # Check daily limit
@@ -389,8 +387,6 @@ class EmailSender:
             new_emails = [e for e in current_emails if e not in sent_emails]
 
             if new_emails:
-                no_new_emails_count = 0  # Reset counter
-
                 # Send the first new email
                 email = new_emails[0]
                 total_sent_this_session += 1
@@ -415,17 +411,9 @@ class EmailSender:
                 if total_sent_this_session % 5 == 0:
                     self.display_status()
             else:
-                # No new emails found
-                no_new_emails_count += 1
-
-                if no_new_emails_count == 1:
-                    print(f"\n⏳ No new emails yet. Waiting for scraper to find more...")
-                    print(f"   (Will stop monitoring after {max_no_new_emails} checks with no new emails)")
-
-                if no_new_emails_count >= max_no_new_emails:
-                    print(f"\n✅ No new emails found for {max_no_new_emails} checks. Stopping email sender.")
-                    logger.info(f"Email sender stopping. No new emails for {max_no_new_emails} checks.")
-                    break
+                # No new emails found - keep waiting for scraper to find more
+                print("⏳ Waiting for scraper to find more emails...", end='\r')
+                logger.info("Waiting for new emails from scraper...")
 
                 # Wait before checking again
                 time.sleep(5)

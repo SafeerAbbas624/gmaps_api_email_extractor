@@ -18,26 +18,25 @@ import random
 
 from config import config
 from email_scraper import EmailScraper
+from api_manager import APIManager
 
 
 class GoogleMapsScraper:
     """Main scraper class for Google Maps business data"""
-    
+
     def __init__(self, runner=None):
-        self.gmaps = None
         self.session_requests = 0
-        self.daily_requests = 0
         self.last_request_time = 0
         self.start_time = datetime.now()
         self.logger = self._setup_logging()
         self.runner = runner
 
+        # Initialize API manager for dual API support
+        self.api_manager = APIManager()
+
         # Initialize email scraper with runner reference
         self.email_scraper = EmailScraper(runner)
 
-        # Initialize Google Maps client
-        self._initialize_gmaps_client()
-        
         # Load or initialize progress tracking
         self.progress = self._load_progress()
         
@@ -67,19 +66,6 @@ class GoogleMapsScraper:
         logger.addHandler(console_handler)
         
         return logger
-    
-    def _initialize_gmaps_client(self):
-        """Initialize Google Maps client with API key"""
-        try:
-            if not config.google_maps_api_key:
-                raise ValueError("Google Maps API key not found")
-            
-            self.gmaps = googlemaps.Client(key=config.google_maps_api_key)
-            self.logger.info("Google Maps client initialized successfully")
-            
-        except Exception as e:
-            self.logger.error(f"Failed to initialize Google Maps client: {e}")
-            raise
     
     def _load_progress(self) -> Dict[str, Any]:
         """Load progress from file or create new progress tracking"""
@@ -117,32 +103,45 @@ class GoogleMapsScraper:
             self.logger.error(f"Failed to save progress: {e}")
     
     def _rate_limit(self):
-        """Implement rate limiting to avoid API bans"""
+        """Implement rate limiting with dual API support and email limits"""
         current_time = time.time()
-        
-        # Check daily limit
-        today = datetime.now().date().isoformat()
-        if self.progress.get("last_request_date") != today:
-            self.daily_requests = 0
-            self.progress["last_request_date"] = today
-        
-        if self.daily_requests >= config.max_daily_requests:
-            self.logger.warning("Daily request limit reached. Waiting until tomorrow...")
+
+        # Check if daily email limit is reached
+        if self.api_manager.check_daily_email_limit():
+            self.logger.warning("⏸️  Daily email limit (500) reached! Waiting until tomorrow...")
             # Calculate time until midnight
             tomorrow = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
             sleep_time = (tomorrow - datetime.now()).total_seconds()
+            self.logger.info(f"⏳ Sleeping for {sleep_time/3600:.1f} hours until next day...")
             time.sleep(sleep_time)
-            self.daily_requests = 0
-        
+
+        # Check monthly limits and switch API if needed
+        api1_limit, api2_limit = self.api_manager.check_monthly_limit()
+        if api1_limit and api2_limit:
+            self.logger.error("❌ Both APIs have reached monthly limit (11K requests each)!")
+            self.logger.error("Please wait until next month or add more API keys")
+            raise Exception("All APIs have reached monthly limit")
+
+        # If current API is at limit, switch to the other one
+        current_api_num = self.api_manager.current_api
+        if current_api_num == 1 and api1_limit:
+            if not self.api_manager.switch_api():
+                raise Exception("Cannot switch API - both at limit")
+        elif current_api_num == 2 and api2_limit:
+            if not self.api_manager.switch_api():
+                raise Exception("Cannot switch API - both at limit")
+
+        # Record the request
+        self.api_manager.record_request()
+
         # Rate limiting between requests
         time_since_last = current_time - self.last_request_time
         if time_since_last < config.delay_between_requests:
             sleep_time = config.delay_between_requests - time_since_last
             time.sleep(sleep_time)
-        
+
         self.last_request_time = time.time()
         self.session_requests += 1
-        self.daily_requests += 1
     
     def _search_places(self, query: str, location: str) -> List[Dict[str, Any]]:
         """Search for places using Google Maps Places API with maximum results"""
@@ -165,8 +164,9 @@ class GoogleMapsScraper:
             try:
                 self.logger.info(f"Searching for: {search_query}")
 
-                # Use text search
-                results = self.gmaps.places(
+                # Use text search with current API
+                gmaps_client = self.api_manager.get_current_client()
+                results = gmaps_client.places(
                     query=search_query,
                     type='establishment'
                 )
@@ -183,7 +183,8 @@ class GoogleMapsScraper:
                     self._rate_limit()
 
                     try:
-                        next_results = self.gmaps.places(
+                        gmaps_client = self.api_manager.get_current_client()
+                        next_results = gmaps_client.places(
                             page_token=next_page_token
                         )
                         new_places = next_results.get('results', [])

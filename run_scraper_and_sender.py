@@ -167,7 +167,7 @@ def main():
         # Start email sender process FIRST (so user can configure without scraper logs)
         sender_process = subprocess.Popen(
             [sys.executable, "-c",
-             f"import os; from email_sender import EmailSender; sender = EmailSender(); sender.run(); open('{config_signal_file}', 'w').close()"],
+             "from email_sender import EmailSender; sender = EmailSender(); sender.run()"],
             cwd=os.getcwd()
         )
 
@@ -191,9 +191,11 @@ def main():
             cwd=os.getcwd()
         )
 
-        # Wait for both processes to complete
-        sender_process.wait()
+        # Wait for scraper to complete (sender will continue monitoring)
         scraper_process.wait()
+
+        # Wait for sender to complete (it will stop after no new emails)
+        sender_process.wait()
 
         print("\n" + "="*80)
         print("✅ ALL PROCESSES COMPLETED SUCCESSFULLY".center(80))

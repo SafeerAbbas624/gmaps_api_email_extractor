@@ -15,10 +15,11 @@ from config import config
 
 class DataManager:
     """Manages data persistence and recovery for the scraper"""
-    
-    def __init__(self):
+
+    def __init__(self, api_manager=None):
         self.logger = logging.getLogger('gmaps_scraper.data_manager')
         self.backup_counter = 0
+        self.api_manager = api_manager
         
     def initialize_output_files(self):
         """Initialize output directories and files"""
@@ -62,6 +63,11 @@ class DataManager:
             for file_path in [config.output_file, config.temp_file]:
                 df_filtered.to_csv(file_path, mode='a', header=False, index=False)
                 self.logger.info(f"✅ SAVED {len(df_filtered)} records to {file_path}")
+
+            # Record emails found in API manager
+            if self.api_manager:
+                for _ in df_filtered.iterrows():
+                    self.api_manager.record_email_found()
 
             self.logger.info(f"Saved batch of {len(df_filtered)} records (filtered from {len(data)})")
 

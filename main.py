@@ -20,14 +20,16 @@ from config import config
 
 class ScraperRunner:
     """Main runner class that orchestrates the scraping process"""
-    
+
     def __init__(self):
-        self.data_manager = DataManager()
         self.running = True
         self.logger = logging.getLogger('gmaps_scraper.runner')
 
         # Initialize scraper with runner reference for shutdown handling
         self.scraper = GoogleMapsScraper(self)
+
+        # Initialize data manager with API manager reference
+        self.data_manager = DataManager(self.scraper.api_manager)
         
         # Setup signal handlers for graceful shutdown
         signal.signal(signal.SIGINT, self._signal_handler)
@@ -68,11 +70,20 @@ class ScraperRunner:
                     self.logger.info("Successfully recovered from previous crash")
             
             self.logger.info("Scraper system initialized successfully")
-            
+
+            # Display API status
+            self._display_api_status()
+
         except Exception as e:
             self.logger.error(f"Failed to initialize scraper: {e}")
             raise
-    
+
+    def _display_api_status(self):
+        """Display current API usage status"""
+        status = self.scraper.api_manager.get_status()
+        print(status)
+        self.logger.info(status)
+
     def run_continuous_scraping(self):
         """Run continuous scraping operation"""
         try:

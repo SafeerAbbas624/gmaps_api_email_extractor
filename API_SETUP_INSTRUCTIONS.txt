@@ -1,0 +1,210 @@
+===============================================================================
+                    GOOGLE MAPS API KEY SETUP - COMPLETE GUIDE
+===============================================================================
+
+STEP 1: CREATE GOOGLE CLOUD ACCOUNT
+===================================
+
+1. Go to: https://console.cloud.google.com/
+2. Sign in with your Google account (or create one if you don't have it)
+3. Accept the Terms of Service if prompted
+
+STEP 2: CREATE A NEW PROJECT
+============================
+
+1. Click on the project dropdown at the top of the page (next to "Google Cloud")
+2. Click "NEW PROJECT" button
+3. Enter project name: "Google Maps Scraper" (or any name you prefer)
+4. Click "CREATE" button
+5. Wait for the project to be created (takes 10-30 seconds)
+6. Make sure your new project is selected in the dropdown
+
+STEP 3: ENABLE REQUIRED APIs
+============================
+
+1. In the left sidebar, click "APIs & Services" > "Library"
+   (Or go to: https://console.cloud.google.com/apis/library)
+
+2. Search for "Places API":
+   - Type "Places API" in the search box
+   - Click on "Places API" from the results
+   - Click the blue "ENABLE" button
+   - Wait for it to enable (shows "API enabled" message)
+
+3. Search for "Maps JavaScript API":
+   - Click the back arrow or search again
+   - Type "Maps JavaScript API" in the search box
+   - Click on "Maps JavaScript API" from the results
+   - Click the blue "ENABLE" button
+   - Wait for it to enable
+
+STEP 4: CREATE API KEY
+======================
+
+1. In the left sidebar, click "APIs & Services" > "Credentials"
+   (Or go to: https://console.cloud.google.com/apis/credentials)
+
+2. Click the blue "+ CREATE CREDENTIALS" button at the top
+3. Select "API key" from the dropdown
+4. A popup will show your new API key - COPY IT IMMEDIATELY!
+   - It looks like: AIzaSyBxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+   - Click the "COPY" button or select all and copy
+   - SAVE THIS KEY SOMEWHERE SAFE - you'll need it in the next steps
+
+5. Click "CLOSE" (don't restrict the key yet, we'll do that next)
+
+STEP 5: SECURE YOUR API KEY (IMPORTANT!)
+========================================
+
+1. You should now see your API key in the credentials list
+2. Click on your API key name to edit it
+3. Under "Application restrictions":
+   - Select "IP addresses"
+   - Click "ADD AN ITEM"
+   - Enter your current IP address
+   - To find your IP: Go to https://whatismyipaddress.com/
+   - Copy the IPv4 address and paste it
+   - Click "DONE"
+
+4. Under "API restrictions":
+   - Select "Restrict key"
+   - Check these APIs:
+     ☑ Places API
+     ☑ Maps JavaScript API
+   - Click "SAVE"
+
+STEP 6: SET UP BILLING (REQUIRED)
+=================================
+
+Google requires a billing account, but you get $200 free credits monthly.
+
+1. Go to: https://console.cloud.google.com/billing
+2. Click "LINK A BILLING ACCOUNT" or "ADD BILLING ACCOUNT"
+3. Enter your credit card information
+4. Complete the billing setup
+
+NOTE: With normal usage, you likely won't exceed the free tier limits.
+The scraper is designed to stay within reasonable limits.
+
+STEP 7: ADD API KEY TO YOUR SCRAPER
+===================================
+
+Now you need to add your API key to the scraper:
+
+1. Open your scraper folder in File Explorer
+2. Find the file named ".env.example"
+3. Right-click on ".env.example" and select "Copy"
+4. Right-click in empty space and select "Paste"
+5. Rename the copied file from ".env.example - Copy" to ".env"
+   - Remove "- Copy" and ".example" from the name
+   - Final name should be just ".env"
+
+6. Right-click on ".env" and select "Open with" > "Notepad"
+7. You'll see: GOOGLE_MAPS_API_KEY=your_api_key_here
+8. Replace "your_api_key_here" with your actual API key
+9. Example: GOOGLE_MAPS_API_KEY=AIzaSyBxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+10. Save the file (Ctrl+S) and close Notepad
+
+IMPORTANT: Make sure there are NO SPACES around the = sign!
+✅ Correct: GOOGLE_MAPS_API_KEY=AIzaSyBxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+❌ Wrong:   GOOGLE_MAPS_API_KEY = AIzaSyBxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+STEP 8: TEST YOUR SETUP
+=======================
+
+1. Open Command Prompt or PowerShell in your scraper folder:
+   - Hold Shift and right-click in the folder
+   - Select "Open PowerShell window here" or "Open command window here"
+
+2. Test with a single search:
+   python main.py --mode single --niche "roofers" --location "San Diego, CA"
+
+3. If successful, you'll see:
+   - "Google Maps client initialized successfully"
+   - "Searching for: roofers in San Diego, CA"
+   - "Found X places for query..."
+   - Results saved to CSV file
+
+STEP 9: RUN THE FULL SCRAPER
+============================
+
+Once testing works, run the full scraper:
+
+Method 1 - Command Line:
+python main.py --mode continuous
+
+Method 2 - Windows Batch File:
+Double-click "run_scraper.bat" and select option 3
+
+The scraper will:
+- Process all niches and locations from your CSV files
+- Save data continuously
+- Show progress in real-time
+- Run safely overnight
+- Resume automatically if interrupted
+
+STEP 10: MONITOR YOUR USAGE
+===========================
+
+Keep an eye on your API usage:
+
+1. Go to: https://console.cloud.google.com/apis/api/places-backend.googleapis.com/quotas
+2. Check your daily usage
+3. The scraper limits to 2000 requests/day by default
+4. You get 2,500 free requests per day from Google
+
+TROUBLESHOOTING
+===============
+
+Problem: "API key not found"
+Solution: Check that your .env file is named correctly (just ".env", not ".env.txt")
+         Make sure the API key is on the same line as GOOGLE_MAPS_API_KEY=
+
+Problem: "API key not valid"
+Solution: Double-check you copied the full API key
+         Make sure you enabled Places API and Maps JavaScript API
+         Check that your IP address is correct in the restrictions
+
+Problem: "Quota exceeded"
+Solution: You've hit the daily limit. Wait until tomorrow or increase limits in Google Cloud
+
+Problem: "Permission denied"
+Solution: Make sure billing is set up in Google Cloud Console
+
+Problem: No results found
+Solution: Try different search terms or locations
+         Check if the location exists and is spelled correctly
+
+COST INFORMATION
+================
+
+- Google gives you $200 in free credits monthly
+- Places API costs: $17 per 1,000 requests after free tier
+- With 2000 requests/day, you'll use about 60,000 requests/month
+- This costs about $1,020/month if you exceed free tier
+- The scraper limits usage to stay within reasonable bounds
+
+SECURITY TIPS
+=============
+
+1. Never share your API key publicly
+2. Always restrict your API key to your IP address
+3. Only enable the APIs you actually use
+4. Monitor your usage regularly
+5. Set up billing alerts in Google Cloud Console
+
+SUPPORT
+=======
+
+If you have issues:
+1. Check the logs/scraper.log file for detailed error messages
+2. Run the test command first before full scraping
+3. Verify your .env file is set up correctly
+4. Make sure billing is enabled in Google Cloud Console
+
+===============================================================================
+                              SETUP COMPLETE!
+===============================================================================
+
+Your scraper is now ready to use. Start with small tests and gradually
+increase to full operation once you're comfortable with the system.

@@ -1,7 +1,7 @@
 {
-  "last_date": "2025-10-21",
-  "sent_today": 4,
-  "total_sent": 4,
+  "last_date": "2025-10-23",
+  "sent_today": 1,
+  "total_sent": 38,
   "failed_count": 0,
   "sent_emails": [
     {
@@ -22,6 +22,176 @@
     {
       "email": "agenzia@5giornate.it",
       "timestamp": "2025-10-21T02:26:42.346327",
+      "status": "success"
+    },
+    {
+      "email": "jambo@jambotour.it",
+      "timestamp": "2025-10-21T02:37:24.902291",
+      "status": "success"
+    },
+    {
+      "email": "info@italytours.eu",
+      "timestamp": "2025-10-21T03:07:35.039934",
+      "status": "success"
+    },
+    {
+      "email": "info@napoliofficialtour.it",
+      "timestamp": "2025-10-21T03:08:06.845880",
+      "status": "success"
+    },
+    {
+      "email": "info@lacasaditourist.com",
+      "timestamp": "2025-10-21T03:08:13.473666",
+      "status": "success"
+    },
+    {
+      "email": "info@trentaremi.it",
+      "timestamp": "2025-10-21T03:08:55.105592",
+      "status": "success"
+    },
+    {
+      "email": "info@guideturistichenapoli.com",
+      "timestamp": "2025-10-21T03:09:31.855108",
+      "status": "success"
+    },
+    {
+      "email": "info@mamatours.com",
+      "timestamp": "2025-10-21T03:09:38.443737",
+      "status": "success"
+    },
+    {
+      "email": "info@lovelyamalfitours.com",
+      "timestamp": "2025-10-21T03:09:44.968983",
+      "status": "success"
+    },
+    {
+      "email": "info@napolicityvision.it",
+      "timestamp": "2025-10-21T03:10:16.633192",
+      "status": "success"
+    },
+    {
+      "email": "info@napuletours.it",
+      "timestamp": "2025-10-21T03:10:23.101836",
+      "status": "success"
+    },
+    {
+      "email": "inforoma@city-sightseeing.it",
+      "timestamp": "2025-10-21T03:10:29.752738",
+      "status": "success"
+    },
+    {
+      "email": "info@cappellintour.it",
+      "timestamp": "2025-10-21T03:11:01.990199",
+      "status": "success"
+    },
+    {
+      "email": "info@grandtourexperience.com",
+      "timestamp": "2025-10-21T03:11:19.157010",
+      "status": "success"
+    },
+    {
+      "email": "info@instazione.it",
+      "timestamp": "2025-10-21T03:11:41.358349",
+      "status": "success"
+    },
+    {
+      "email": "info@leisure-italy.com",
+      "timestamp": "2025-10-21T03:12:02.985185",
+      "status": "success"
+    },
+    {
+      "email": "info@giromondotour.it",
+      "timestamp": "2025-10-21T03:12:09.541372",
+      "status": "success"
+    },
+    {
+      "email": "info@napoli-tours.it",
+      "timestamp": "2025-10-21T03:12:36.855582",
+      "status": "success"
+    },
+    {
+      "email": "booking@trialtravel.com",
+      "timestamp": "2025-10-21T03:32:16.486294",
+      "status": "success"
+    },
+    {
+      "email": "info@viradaexperience.com",
+      "timestamp": "2025-10-21T03:33:11.930856",
+      "status": "success"
+    },
+    {
+      "email": "info@sweetnaplestours.com",
+      "timestamp": "2025-10-21T03:34:30.003189",
+      "status": "success"
+    },
+    {
+      "email": "info@seeamalficoastprivatetours.com",
+      "timestamp": "2025-10-21T03:34:37.245785",
+      "status": "success"
+    },
+    {
+      "email": "booking@amalfidriver.com",
+      "timestamp": "2025-10-21T03:34:44.555384",
+      "status": "success"
+    },
+    {
+      "email": "info@cantastorienapolitour.it",
+      "timestamp": "2025-10-21T03:35:11.248624",
+      "status": "success"
+    },
+    {
+      "email": "info@piratinviaggio.com",
+      "timestamp": "2025-10-21T03:35:17.873819",
+      "status": "success"
+    },
+    {
+      "email": "info@naplesdriverguide.com",
+      "timestamp": "2025-10-21T03:35:39.858643",
+      "status": "success"
+    },
+    {
+      "email": "info@ischiacharterboat.it",
+      "timestamp": "2025-10-21T03:36:02.123343",
+      "status": "success"
+    },
+    {
+      "email": "info@lovelytoursinnaples.com",
+      "timestamp": "2025-10-21T03:36:23.652000",
+      "status": "success"
+    },
+    {
+      "email": "info@bluegrottotours.com",
+      "timestamp": "2025-10-21T03:36:30.269495",
+      "status": "success"
+    },
+    {
+      "email": "prenotazioni@bongitravel.it",
+      "timestamp": "2025-10-21T03:36:47.501083",
+      "status": "success"
+    },
+    {
+      "email": "operativo@scooptravel.it",
+      "timestamp": "2025-10-21T03:36:54.088027",
+      "status": "success"
+    },
+    {
+      "email": "info@cabair.it",
+      "timestamp": "2025-10-21T03:37:10.709317",
+      "status": "success"
+    },
+    {
+      "email": "info@mystery.city",
+      "timestamp": "2025-10-21T03:37:17.461890",
+      "status": "success"
+    },
+    {
+      "email": "info@lecaperetour.it",
+      "timestamp": "2025-10-21T03:37:24.002761",
+      "status": "success"
+    },
+    {
+      "email": "info@kailasvacanze.it",
+      "timestamp": "2025-10-23T04:06:40.597319",
       "status": "success"
     }
   ]

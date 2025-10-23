@@ -92,9 +92,9 @@ class GoogleMapsScraper:
         try:
             self.progress["last_update"] = datetime.now().isoformat()
             self.progress["total_scraped"] = getattr(self, 'total_scraped', 0)
-            self.progress["daily_requests"] = self.daily_requests
+            self.progress["daily_requests"] = self.session_requests
             self.progress["last_request_date"] = datetime.now().date().isoformat()
-            
+
             os.makedirs(os.path.dirname(config.progress_file), exist_ok=True)
             with open(config.progress_file, 'w') as f:
                 json.dump(self.progress, f, indent=2)
@@ -222,18 +222,19 @@ class GoogleMapsScraper:
     def _get_place_details(self, place_id: str) -> Dict[str, Any]:
         """Get detailed information for a specific place"""
         self._rate_limit()
-        
+
         try:
             fields = [
                 'name', 'formatted_address', 'formatted_phone_number',
                 'website', 'url', 'place_id', 'geometry'
             ]
-            
-            details = self.gmaps.place(
+
+            gmaps_client = self.api_manager.get_current_client()
+            details = gmaps_client.place(
                 place_id=place_id,
                 fields=fields
             )
-            
+
             return details.get('result', {})
             
         except Exception as e:

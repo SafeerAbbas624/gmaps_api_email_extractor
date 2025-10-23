@@ -30,15 +30,15 @@ class APIManager:
         try:
             if self.api_key_1:
                 self.gmaps_1 = googlemaps.Client(key=self.api_key_1)
-                self.logger.info("✅ API Key 1 initialized successfully")
+                self.logger.info("[OK] API Key 1 initialized successfully")
             else:
-                self.logger.error("❌ API Key 1 not found")
-            
+                self.logger.error("[ERROR] API Key 1 not found")
+
             if self.api_key_2:
                 self.gmaps_2 = googlemaps.Client(key=self.api_key_2)
-                self.logger.info("✅ API Key 2 initialized successfully")
+                self.logger.info("[OK] API Key 2 initialized successfully")
             else:
-                self.logger.error("❌ API Key 2 not found")
+                self.logger.error("[ERROR] API Key 2 not found")
         except Exception as e:
             self.logger.error(f"Failed to initialize API clients: {e}")
             raise
@@ -72,30 +72,30 @@ class APIManager:
         """Reset daily counters if it's a new day"""
         today = datetime.now().date().isoformat()
         api_key = f"api_{api_num}"
-        
+
         if self.usage_data[api_key]["last_date"] != today:
             self.usage_data[api_key]["daily_requests"] = 0
             self.usage_data[api_key]["last_date"] = today
-            self.logger.info(f"🔄 Reset daily counter for API {api_num}")
-    
+            self.logger.info(f"[RESET] Daily counter for API {api_num}")
+
     def _reset_monthly_if_needed(self, api_num: int):
         """Reset monthly counters if it's a new month"""
         current_month = datetime.now().strftime("%Y-%m")
         api_key = f"api_{api_num}"
-        
+
         if self.usage_data[api_key]["last_month"] != current_month:
             self.usage_data[api_key]["monthly_requests"] = 0
             self.usage_data[api_key]["last_month"] = current_month
-            self.logger.info(f"🔄 Reset monthly counter for API {api_num}")
-    
+            self.logger.info(f"[RESET] Monthly counter for API {api_num}")
+
     def _reset_daily_emails_if_needed(self):
         """Reset daily email counter if it's a new day"""
         today = datetime.now().date().isoformat()
-        
+
         if self.usage_data["last_email_date"] != today:
             self.usage_data["daily_emails"] = 0
             self.usage_data["last_email_date"] = today
-            self.logger.info("🔄 Reset daily email counter")
+            self.logger.info("[RESET] Daily email counter")
     
     def get_current_client(self) -> googlemaps.Client:
         """Get the current API client"""
@@ -126,42 +126,42 @@ class APIManager:
         """Check if daily email limit is reached"""
         self._reset_daily_emails_if_needed()
         if self.usage_data["daily_emails"] >= config.max_daily_emails:
-            self.logger.warning(f"⚠️  Daily email limit reached ({config.max_daily_emails} emails)")
+            self.logger.warning(f"[WARNING] Daily email limit reached ({config.max_daily_emails} emails)")
             return True
         return False
-    
+
     def check_monthly_limit(self) -> Tuple[bool, bool]:
         """Check if monthly limits are reached for both APIs. Returns (api1_limit_reached, api2_limit_reached)"""
         self._reset_monthly_if_needed(1)
         self._reset_monthly_if_needed(2)
-        
+
         api1_limit = self.usage_data["api_1"]["monthly_requests"] >= config.max_monthly_requests_per_api
         api2_limit = self.usage_data["api_2"]["monthly_requests"] >= config.max_monthly_requests_per_api
-        
+
         if api1_limit:
-            self.logger.warning(f"⚠️  API 1 monthly limit reached ({config.max_monthly_requests_per_api} requests)")
+            self.logger.warning(f"[WARNING] API 1 monthly limit reached ({config.max_monthly_requests_per_api} requests)")
         if api2_limit:
-            self.logger.warning(f"⚠️  API 2 monthly limit reached ({config.max_monthly_requests_per_api} requests)")
-        
+            self.logger.warning(f"[WARNING] API 2 monthly limit reached ({config.max_monthly_requests_per_api} requests)")
+
         return api1_limit, api2_limit
-    
+
     def switch_api(self) -> bool:
         """Switch to the other API. Returns True if switch successful, False if both APIs are at limit"""
         api1_limit, api2_limit = self.check_monthly_limit()
-        
+
         if api1_limit and api2_limit:
-            self.logger.error("❌ Both APIs have reached monthly limit!")
+            self.logger.error("[ERROR] Both APIs have reached monthly limit!")
             return False
-        
+
         if self.current_api == 1 and not api2_limit:
             self.current_api = 2
-            self.logger.info("🔄 Switched to API 2")
+            self.logger.info("[SWITCH] Switched to API 2")
             return True
         elif self.current_api == 2 and not api1_limit:
             self.current_api = 1
-            self.logger.info("🔄 Switched to API 1")
+            self.logger.info("[SWITCH] Switched to API 1")
             return True
-        
+
         return False
     
     def get_status(self) -> str:

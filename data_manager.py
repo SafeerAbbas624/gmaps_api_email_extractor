@@ -62,7 +62,7 @@ class DataManager:
             # Append to both main and temp files
             for file_path in [config.output_file, config.temp_file]:
                 df_filtered.to_csv(file_path, mode='a', header=False, index=False)
-                self.logger.info(f"✅ SAVED {len(df_filtered)} records to {file_path}")
+                self.logger.info(f"[SAVED] {len(df_filtered)} records to {file_path}")
 
             # Record emails found in API manager
             if self.api_manager:

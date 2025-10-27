@@ -370,21 +370,55 @@ class EmailSender:
         while True:
             # Check daily limit
             if self.check_daily_limit():
-                print(f"\n⏸️  Daily limit reached ({self.daily_limit} emails)! Waiting 24 hours...")
+                print(f"\n[PAUSE] Daily limit reached ({self.daily_limit} emails)! Waiting 24 hours...")
                 logger.info(f"Daily limit reached ({self.daily_limit} emails). Waiting 24 hours.")
 
-                # Wait 24 hours from now
-                wait_seconds = 24 * 60 * 60  # 24 hours in seconds
-                next_reset = datetime.now() + timedelta(seconds=wait_seconds)
+                # Get the timestamp of the last email sent
+                tracking_data = self.load_tracking_data()
+                sent_emails_list = tracking_data.get('sent_emails', [])
 
-                print(f"⏳ Waiting 24 hours until {next_reset.strftime('%Y-%m-%d %H:%M:%S')}")
-                logger.info(f"Waiting 24 hours until {next_reset.strftime('%Y-%m-%d %H:%M:%S')}")
-                time.sleep(wait_seconds)
+                if sent_emails_list:
+                    # Find the most recent successful email timestamp
+                    successful_emails = [e for e in sent_emails_list if e.get('status') == 'success']
+                    if successful_emails:
+                        last_email_timestamp = successful_emails[-1]['timestamp']
+                        last_email_time = datetime.fromisoformat(last_email_timestamp)
 
-                # Reset daily count after 24 hours
+                        # Calculate reset time: 24 hours after last email
+                        reset_time = last_email_time + timedelta(hours=24)
+
+                        # Calculate how long to wait from now
+                        now = datetime.now()
+                        wait_seconds = (reset_time - now).total_seconds()
+
+                        if wait_seconds > 0:
+                            print(f"[INFO] Last email sent at: {last_email_time.strftime('%Y-%m-%d %H:%M:%S')}")
+                            print(f"[WAIT] Waiting {wait_seconds/3600:.1f} hours until {reset_time.strftime('%Y-%m-%d %H:%M:%S')}")
+                            logger.info(f"Last email sent at {last_email_time.strftime('%Y-%m-%d %H:%M:%S')}")
+                            logger.info(f"Waiting {wait_seconds/3600:.1f} hours until {reset_time.strftime('%Y-%m-%d %H:%M:%S')}")
+                            time.sleep(wait_seconds)
+                        else:
+                            print(f"[INFO] Reset time already passed. Resetting now.")
+                            logger.info("Reset time already passed. Resetting now.")
+                    else:
+                        # No successful emails, wait 24 hours from now
+                        wait_seconds = 24 * 60 * 60
+                        next_reset = datetime.now() + timedelta(seconds=wait_seconds)
+                        print(f"[WAIT] Waiting 24 hours until {next_reset.strftime('%Y-%m-%d %H:%M:%S')}")
+                        logger.info(f"Waiting 24 hours until {next_reset.strftime('%Y-%m-%d %H:%M:%S')}")
+                        time.sleep(wait_seconds)
+                else:
+                    # No emails sent yet, wait 24 hours from now
+                    wait_seconds = 24 * 60 * 60
+                    next_reset = datetime.now() + timedelta(seconds=wait_seconds)
+                    print(f"[WAIT] Waiting 24 hours until {next_reset.strftime('%Y-%m-%d %H:%M:%S')}")
+                    logger.info(f"Waiting 24 hours until {next_reset.strftime('%Y-%m-%d %H:%M:%S')}")
+                    time.sleep(wait_seconds)
+
+                # Reset daily count after waiting
                 self.sent_today = 0
                 logger.info("24 hours passed. Daily count reset. Resuming email sending.")
-                print("✅ 24-hour reset complete. Resuming...")
+                print("[OK] 24-hour reset complete. Resuming...")
 
             # Read current emails from CSV
             current_emails = self.read_scraped_emails()

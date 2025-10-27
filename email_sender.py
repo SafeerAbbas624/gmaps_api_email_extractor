@@ -57,7 +57,6 @@ class EmailSender:
         self.total_sent = 0
         self.failed_count = 0
         self.running = True
-        self.current_date = datetime.now().strftime('%Y-%m-%d')  # Track current date
         
     def display_banner(self):
         """Display beautiful ASCII art banner"""
@@ -119,9 +118,8 @@ class EmailSender:
                     self.sent_today = data.get('sent_today', 0)
                     self.total_sent = data.get('total_sent', 0)
                     self.failed_count = data.get('failed_count', 0)
-                    self.current_date = data.get('last_date', today)  # Update current_date from tracking file
 
-                    logger.info(f"Loaded tracking data: {self.sent_today} sent today, {self.total_sent} total, date: {self.current_date}")
+                    logger.info(f"Loaded tracking data: {self.sent_today} sent today, {self.total_sent} total")
                     return data
             else:
                 logger.info("No tracking file found. Creating new one.")
@@ -313,36 +311,6 @@ class EmailSender:
             self.save_tracking_data(data)
         except Exception as e:
             logger.error(f"Error updating tracking: {e}")
-    
-    def check_and_reset_if_new_day(self):
-        """Check if it's a new day and reset the counter at midnight"""
-        today = datetime.now().strftime('%Y-%m-%d')
-
-        if today != self.current_date:
-            logger.info(f"[RESET] Date changed from {self.current_date} to {today}. Resetting daily count at midnight.")
-            print(f"\n[MIDNIGHT RESET] New day detected! Resetting counter from {self.sent_today} to 0")
-
-            # Reset the counter
-            self.sent_today = 0
-            self.current_date = today
-
-            # Update tracking file with new date
-            try:
-                if os.path.exists(self.tracking_file):
-                    with open(self.tracking_file, 'r', encoding='utf-8') as f:
-                        data = json.load(f)
-
-                    data['sent_today'] = 0
-                    data['last_date'] = today
-
-                    self.save_tracking_data(data)
-                    logger.info("[RESET] Tracking file updated with new date and reset counter")
-            except Exception as e:
-                logger.error(f"Error updating tracking file during reset: {e}")
-
-            return True  # Indicates a reset occurred
-
-        return False  # No reset needed
 
     def check_daily_limit(self):
         """Check if daily limit has been reached"""
@@ -398,28 +366,23 @@ class EmailSender:
         total_sent_this_session = 0
 
         while True:
-            # Check if it's a new day and reset counter at midnight
-            self.check_and_reset_if_new_day()
-
             # Check daily limit
             if self.check_daily_limit():
-                print(f"\n⏸️  Daily limit reached ({self.daily_limit} emails)! Waiting for next day...")
-                logger.info(f"Daily limit reached ({self.daily_limit} emails). Waiting for next day.")
+                print(f"\n⏸️  Daily limit reached ({self.daily_limit} emails)! Waiting 24 hours...")
+                logger.info(f"Daily limit reached ({self.daily_limit} emails). Waiting 24 hours.")
 
-                # Wait until next day (midnight)
-                now = datetime.now()
-                next_day = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
-                wait_seconds = (next_day - now).total_seconds()
+                # Wait 24 hours from now
+                wait_seconds = 24 * 60 * 60  # 24 hours in seconds
+                next_reset = datetime.now() + timedelta(seconds=wait_seconds)
 
-                print(f"⏳ Waiting {wait_seconds/3600:.1f} hours until midnight: {next_day.strftime('%Y-%m-%d %H:%M:%S')}")
-                logger.info(f"Waiting {wait_seconds/3600:.1f} hours until midnight")
+                print(f"⏳ Waiting 24 hours until {next_reset.strftime('%Y-%m-%d %H:%M:%S')}")
+                logger.info(f"Waiting 24 hours until {next_reset.strftime('%Y-%m-%d %H:%M:%S')}")
                 time.sleep(wait_seconds)
 
-                # After waking up at midnight, the next loop iteration will call check_and_reset_if_new_day()
-                # which will reset the counter
-                logger.info("Woke up at midnight. Next iteration will reset counter.")
-                print("✅ Midnight reached. Checking for new day...")
-                continue  # Go back to start of loop to trigger reset check
+                # Reset daily count after 24 hours
+                self.sent_today = 0
+                logger.info("24 hours passed. Daily count reset. Resuming email sending.")
+                print("✅ 24-hour reset complete. Resuming...")
 
             # Read current emails from CSV
             current_emails = self.read_scraped_emails()

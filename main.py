@@ -84,13 +84,12 @@ class ScraperRunner:
         print(status)
         # Don't log the box-drawing characters to file (causes Unicode errors on Windows)
         # Just log a simple text version
-        self.logger.info("API Status: API1 Daily=%d Monthly=%d | API2 Daily=%d Monthly=%d | Emails=%d/%d | Current API=%s",
+        self.logger.info("API Status: API1 Daily=%d Monthly=%d | API2 Daily=%d Monthly=%d | Emails=%d/500 | Current API=%s",
                         self.scraper.api_manager.usage_data['api_1']['daily_requests'],
                         self.scraper.api_manager.usage_data['api_1']['monthly_requests'],
                         self.scraper.api_manager.usage_data['api_2']['daily_requests'],
                         self.scraper.api_manager.usage_data['api_2']['monthly_requests'],
                         self.scraper.api_manager.usage_data['daily_emails'],
-                        self.scraper.api_manager.config.max_daily_emails,
                         self.scraper.api_manager.current_api)
 
     def run_continuous_scraping(self):

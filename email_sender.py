@@ -28,11 +28,13 @@ from pathlib import Path
 import threading
 
 # Set up logging with UTF-8 encoding (initially disabled for configuration)
+# Use unified log file for both scraper and email sender
+os.makedirs("logs", exist_ok=True)
 logging.basicConfig(
     level=logging.CRITICAL,  # Start with CRITICAL to suppress logs during config
-    format='%(asctime)s - %(levelname)s - %(message)s',
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler("email_sender.log", encoding='utf-8'),
+        logging.FileHandler("logs/scraper.log", encoding='utf-8'),
         logging.StreamHandler(sys.stdout)
     ]
 )

@@ -177,11 +177,11 @@ class APIManager:
 ║                    API USAGE STATUS                            ║
 ╠════════════════════════════════════════════════════════════════╣
 ║ API 1:                                                         ║
-║   Daily Requests:   {self.usage_data['api_1']['daily_requests']:>5} / ∞                                  ║
+║   Daily Requests:   {self.usage_data['api_1']['daily_requests']:>5} / unlimited                          ║
 ║   Monthly Requests: {self.usage_data['api_1']['monthly_requests']:>5} / {config.max_monthly_requests_per_api}                          ║
 ║                                                                ║
 ║ API 2:                                                         ║
-║   Daily Requests:   {self.usage_data['api_2']['daily_requests']:>5} / ∞                                  ║
+║   Daily Requests:   {self.usage_data['api_2']['daily_requests']:>5} / unlimited                          ║
 ║   Monthly Requests: {self.usage_data['api_2']['monthly_requests']:>5} / {config.max_monthly_requests_per_api}                          ║
 ║                                                                ║
 ║ Emails Found Today: {self.usage_data['daily_emails']:>5} / {config.max_daily_emails}                          ║

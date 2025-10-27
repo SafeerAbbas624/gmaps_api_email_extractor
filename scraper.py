@@ -108,17 +108,17 @@ class GoogleMapsScraper:
 
         # Check if daily email limit is reached
         if self.api_manager.check_daily_email_limit():
-            self.logger.warning("⏸️  Daily email limit (500) reached! Waiting until tomorrow...")
+            self.logger.warning("[PAUSE] Daily email limit (500) reached! Waiting until tomorrow...")
             # Calculate time until midnight
             tomorrow = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
             sleep_time = (tomorrow - datetime.now()).total_seconds()
-            self.logger.info(f"⏳ Sleeping for {sleep_time/3600:.1f} hours until next day...")
+            self.logger.info(f"[WAIT] Sleeping for {sleep_time/3600:.1f} hours until next day...")
             time.sleep(sleep_time)
 
         # Check monthly limits and switch API if needed
         api1_limit, api2_limit = self.api_manager.check_monthly_limit()
         if api1_limit and api2_limit:
-            self.logger.error("❌ Both APIs have reached monthly limit (11K requests each)!")
+            self.logger.error("[ERROR] Both APIs have reached monthly limit (11K requests each)!")
             self.logger.error("Please wait until next month or add more API keys")
             raise Exception("All APIs have reached monthly limit")
 

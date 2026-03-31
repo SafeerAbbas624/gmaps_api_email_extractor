@@ -1,0 +1,6 @@
+{
+  "email_sending_start_time": "09:00",
+  "daily_email_limit": 120,
+  "delay_between_emails": 600, 
+  "timezone": "America/New_York"
+}

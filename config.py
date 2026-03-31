@@ -42,7 +42,7 @@ class ScraperConfig:
 
     # API Limits (Free tier: 11K requests per month per API)
     max_monthly_requests_per_api: int = 11000  # Free tier limit
-    max_daily_emails: int = 500  # Stop scraping after 500 emails per day
+    max_daily_emails: int = 700  # DEPRECATED: Now checks emails SENT (400) instead of emails FOUND
     max_daily_requests: int = 2000  # Deprecated, kept for compatibility
     enable_crash_recovery: bool = True
     backup_interval: int = 100  # Save backup every N records

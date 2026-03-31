@@ -1,262 +1,297 @@
-# Google Maps Business Scraper
+# 🚀 FREE Google Maps Business Scraper + Email Sender
 
-A robust, production-ready Google Maps scraper that can run continuously overnight to extract business information for multiple niches and locations.
+**100% FREE** Google Maps scraper for Italian travel agencies with automated email sending.
 
-## Features
+## ✨ Features
 
-✅ **Continuous Operation**: Runs overnight safely without getting banned  
-✅ **Crash Recovery**: Automatically recovers data if the script or computer crashes  
-✅ **Duplicate Removal**: Removes duplicates based on phone numbers  
-✅ **Rate Limiting**: Built-in safety measures to avoid API bans  
-✅ **Progress Tracking**: Resumes from where it left off  
-✅ **Configurable**: Easy to adjust for Google Maps changes  
-✅ **Comprehensive Logging**: Detailed logs for monitoring and debugging  
+✅ **100% FREE** - No API costs using SeleniumBase UC Mode
+✅ **Smart Email Extraction** - Dual method: Google Maps + Website scraping
+✅ **Automated Email Sending** - Send up to 400 emails/day via Gmail
+✅ **Duplicate Protection** - Automatic deduplication of emails
+✅ **Rate Limiting** - Safe scraping (10 req/min, 5,000/day)
+✅ **Progress Tracking** - Resume from where you left off
+✅ **24h Auto-Wait** - Automatically waits when Gmail limit is hit
+✅ **Daily Logging** - Comprehensive daily summaries
 
-## Data Extracted
+## 📊 Current Setup
 
-- Business name
-- Niche/category
-- Full address
-- State
-- Phone number
-- Website
-- **📧 Email address** (with advanced extraction and validation)
-- Google Maps result URL
+**Keywords:** 446 travel agency keywords
+- 214 general agency types (all specializations)
+- 232 London-specific keywords (tours, study, entertainment)
 
-*Note: Records without valid email addresses are automatically filtered out*
+**Locations:** 237 Italian cities
 
-## 📧 Email Extraction Features
+**Total Searches:** 105,702 keyword+location combinations
 
-✅ **Dual Detection Methods**:
-- First checks Google Maps data for email
-- Falls back to website scraping if not found
+**Language:** Perfect mix of Italian and English (~50/50)
 
-✅ **Advanced Validation**:
-- Strict email format validation
-- Rejects malformed emails (e.g., `info@domain.comloginlogin`)
-- Filters out concatenated text artifacts
+## 🎯 What You'll Find
 
-✅ **Multi-Language Support**:
-- Italian contact pages: contatti, contatto, contattaci, informazioni
-- English contact pages: contact, contacts, about, info
-
-✅ **Quality Assurance**:
-- Only saves records with valid emails
-- 100% email accuracy
-- Automatic filtering of invalid records
+✅ General travel agencies (all types)
+✅ London travel specialists
+✅ Study abroad agencies (English courses)
+✅ Educational travel providers
+✅ Event & MICE agencies
+✅ Wedding & honeymoon specialists
+✅ Transfer & support services
 
 ## 🚀 Quick Start
 
-### 📋 **STEP 1: Get Detailed Setup Instructions**
+### 1️⃣ Install Dependencies
 
-**For complete API setup with screenshots and every detail:**
-👉 **Read: `API_SETUP_INSTRUCTIONS.txt`** 👈
-
-**For step-by-step running instructions:**
-👉 **Read: `HOW_TO_RUN_SCRAPER.txt`** 👈
-
-### ⚡ **STEP 2: Quick Setup**
-
-1. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Get Google Maps API Key** (detailed steps in `API_SETUP_INSTRUCTIONS.txt`):
-   - Go to [Google Cloud Console](https://console.cloud.google.com/)
-   - Create project → Enable Places API → Create API Key
-   - Secure your API key with IP restrictions
-
-3. **Add API Key to scraper:**
-   - Copy `.env.example` to `.env`
-   - Edit `.env` and replace `your_api_key_here` with your actual API key
-   - Example: `GOOGLE_MAPS_API_KEY=AIzaSyBxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
-
-### 🎯 **STEP 3: Test & Run**
-
-**Test first:**
 ```bash
-python main.py --mode single --niche "roofers" --location "San Diego, CA"
+pip install -r requirements.txt
 ```
 
-**Run full scraper:**
-```bash
-python main.py --mode continuous
-```
+### 2️⃣ Configure Email (First Time Only)
 
-**Windows users:** Double-click `run_scraper.bat` for easy menu interface!
+The scraper will ask for your Gmail credentials on first run:
+- Gmail address
+- Gmail App Password ([How to get it](https://support.google.com/accounts/answer/185833))
+- Email subject
+- Email message
 
-### 4. Customize Input Data
+Configuration is saved to `email_config.json` for future runs.
 
-Edit the input files to match your needs:
-
-- `input/niches.csv`: Add your target business niches
-- `input/locations.csv`: Add your target cities and states
-
-## Usage
-
-### Continuous Scraping (Recommended)
-
-Run the scraper continuously for all niches and locations:
+### 3️⃣ Run the Scraper + Email Sender
 
 ```bash
-python main.py --mode continuous
+python run_free_scraper.py
 ```
 
 This will:
-- Process all niche/location combinations
-- Save data continuously
-- Handle crashes and resume automatically
-- Run safely overnight
+1. **Scraper**: Search Google Maps and extract emails (10 searches/min)
+2. **Email Sender**: Send emails to collected addresses (400/day max)
+3. Both run in parallel automatically
 
-### Single Search (Testing)
+### 4️⃣ Monitor Progress
 
-Test with a single niche and location:
+**Real-time console output:**
+```
+Scraper: 1,234/105,702 searches (1.2%) | 567 businesses | 89 emails
+Email Sender: 45/89 sent (50.6%) | 2 failed | Next: 24h wait at limit
+```
 
+**Detailed logs:**
 ```bash
-python main.py --mode single --niche "roofers" --location "San Diego, CA"
+# Scraper logs
+tail -f logs/scraper.log
+
+# Email sender logs
+tail -f logs/email_sender.log
+
+# Runner logs
+tail -f logs/runner.log
 ```
 
-### Cleanup Only
-
-Remove duplicates from existing data:
-
-```bash
-python main.py --mode cleanup
-```
-
-## Configuration
-
-Adjust settings in `config.py`:
-
-- **Rate Limiting**: `requests_per_minute`, `delay_between_requests`
-- **Safety**: `max_daily_requests`, `max_retries`
-- **Data**: `max_results_per_search`, `backup_interval`
-
-## File Structure
+## 📁 Project Structure
 
 ```
-├── main.py              # Main runner script
-├── scraper.py           # Core scraper logic
-├── data_manager.py      # Data persistence and recovery
-├── config.py            # Configuration settings
-├── test_scraper.py      # Test suite
-├── requirements.txt     # Python dependencies
-├── .env.example         # Environment template
+gmaps_bot_api_version/
 ├── input/
-│   ├── niches.csv       # Target business niches
-│   └── locations.csv    # Target cities and states
+│   ├── niches.csv              # 446 keywords (general + London)
+│   └── locations.csv           # 237 Italian cities
 ├── output/
-│   ├── scraped_data.csv # Raw scraped data
-│   ├── scraped_data_final.csv # Clean data (no duplicates)
-│   ├── temp_scraped_data.csv  # Temporary file for crash recovery
-│   └── progress.json    # Progress tracking
+│   ├── scraped_data.csv        # All scraped businesses
+│   └── progress.json           # Scraper progress tracking
 ├── logs/
-│   └── scraper.log      # Detailed logs
-└── backups/             # Automatic backups
+│   ├── scraper.log            # Scraper detailed logs
+│   ├── email_sender.log       # Email sender detailed logs
+│   └── runner.log             # Main runner logs
+├── emails.json                 # Email database (unique, deduplicated)
+├── email_config.json          # Email configuration (auto-created)
+├── run_free_scraper.py        # Main runner (START HERE)
+├── seleniumbase_scraper.py    # FREE scraper (SeleniumBase UC Mode)
+├── simple_email_sender.py     # Email sender (Gmail SMTP)
+├── simple_email_manager.py    # Email manager (deduplication)
+├── email_scraper.py           # Email extraction from websites
+├── rate_limiter.py            # Rate limiting (10/min, 5000/day)
+├── config.py                  # Configuration settings
+├── requirements.txt           # Python dependencies
+└── README.md                  # This file
 ```
 
-## Safety Features
+## 📊 Data Flow
 
-### Anti-Ban Protection
-- Rate limiting (30 requests/minute by default)
-- Random delays between requests
-- Daily request limits
-- Retry logic with exponential backoff
+```
+1. SCRAPING:
+   niches.csv + locations.csv
+   → seleniumbase_scraper.py (Google Maps search)
+   → email_scraper.py (extract emails from websites)
+   → output/scraped_data.csv (all businesses)
+   → emails.json (unique emails only)
 
-### Crash Recovery
-- Progress is saved after each location
-- Temporary files store data continuously
-- Automatic recovery on restart
-- Regular backups
+2. EMAIL SENDING:
+   emails.json (unique, unsent emails)
+   → simple_email_sender.py (Gmail SMTP)
+   → emails.json (updated with sent status)
+```
 
-### Error Handling
-- Graceful handling of API errors
-- Skips problematic locations/niches
-- Comprehensive logging
-- Continues operation despite individual failures
+## ⚙️ Configuration
 
-## Testing
+### Rate Limiting (Automatic)
+- **10 searches/minute** (6 sec intervals)
+- **300 searches/hour**
+- **5,000 searches/day**
+- Prevents IP blocking
 
-Run the test suite:
+### Email Limits (Automatic)
+- **400 emails/day** (Gmail limit)
+- **3 seconds between emails**
+- **24h auto-wait** when limit hit
+- Resumes automatically after 24h
 
+### Customization
+
+Edit `config.py` to change scraper settings:
+```python
+# Search settings
+max_results_per_search: int = 200
+search_radius: int = 50000  # meters
+
+# Email scraping
+enable_email_scraping: bool = True
+website_timeout: int = 10  # seconds
+max_pages_per_website: int = 3
+```
+
+Edit `simple_email_sender.py` to change email settings:
+```python
+self.daily_limit = 400  # emails per day
+self.delay_between_emails = 3  # seconds
+```
+
+## 🔄 Progress Tracking
+
+### Scraper Progress
+Saved in `output/progress.json`:
+```json
+{
+  "current_niche_index": 45,
+  "current_location_index": 123
+}
+```
+
+**To reset and start fresh:**
 ```bash
-python test_scraper.py
+python -c "import json; json.dump({'current_niche_index': 0, 'current_location_index': 0}, open('output/progress.json', 'w'))"
 ```
 
-This will run:
-1. Unit tests (no API calls required)
-2. Integration test (requires valid API key)
+### Email Database
+Saved in `emails.json`:
+```json
+{
+  "all_emails": {
+    "info@example.com": {
+      "business_name": "Agenzia Viaggi Roma",
+      "sent_count": 1,
+      "last_sent": "2025-11-14 10:30:45"
+    }
+  },
+  "stats": {
+    "total_collected": 771,
+    "total_sent": 362,
+    "total_failed": 87
+  }
+}
+```
 
-## Monitoring
+## 📈 Expected Results
 
-### Check Progress
-Monitor the scraper through:
-- Console output (real-time)
-- Log file: `logs/scraper.log`
-- Progress file: `output/progress.json`
+**Estimated Timeline:**
+- **Total searches:** 105,702
+- **At 10 searches/min:** ~176 hours (~7 days)
+- **Emails collected:** 10,000-15,000
+- **Emails sent:** 400/day
 
-### Data Statistics
-The scraper provides detailed statistics:
-- Total records scraped
-- Unique businesses found
-- Coverage by niche and location
-- Duplicate removal results
+**What You'll Get:**
+- ✅ 10,000-15,000 unique email addresses
+- ✅ Travel agencies across all 237 Italian cities
+- ✅ General agencies + London specialists
+- ✅ Study abroad agencies
+- ✅ Event & MICE agencies
+- ✅ Wedding & honeymoon specialists
 
-## Troubleshooting
+## 🚨 Troubleshooting
 
-### Common Issues
+### Scraper Issues
 
-**"Google Maps API key not found"**
-- Ensure your `.env` file contains the correct API key
-- Verify the API key has proper permissions
-
-**"No results found"**
-- Check if the niche/location combination is valid
-- Verify your API key has sufficient quota
-- Try a different search term
+**"No businesses found"**
+- Normal for some keyword+location combinations
+- Scraper will continue to next search
 
 **"Rate limit exceeded"**
-- The scraper will automatically wait and retry
-- Adjust `requests_per_minute` in config.py if needed
+- Automatic wait and retry
+- This is normal and expected
 
-### Adjusting for Google Maps Changes
+**"Email extraction failed"**
+- Normal - not all websites have emails
+- Scraper tries Google Maps first, then website
 
-If Google Maps changes and breaks the scraper:
+### Email Sender Issues
 
-1. Check the logs for specific error messages
-2. Update the field mappings in `_extract_business_data()` method
-3. Adjust the search parameters in `_search_places()` method
-4. Test with single searches before running continuously
+**"Daily user sending limit exceeded"**
+- Gmail limit hit (400 emails/day)
+- Sender will automatically wait 24h
+- Resumes automatically after wait period
 
-## Best Practices
+**"Authentication failed"**
+- Check Gmail App Password
+- Make sure 2FA is enabled on Gmail
+- Regenerate App Password if needed
 
-1. **Start Small**: Test with a few niches/locations first
-2. **Monitor Logs**: Keep an eye on the log file during operation
-3. **Regular Backups**: The system creates automatic backups, but consider additional backups for important data
-4. **API Quota**: Monitor your Google Maps API usage in Google Cloud Console
-5. **Respectful Scraping**: Don't increase rate limits too aggressively
+**"No unsent emails"**
+- All collected emails have been sent
+- Wait for scraper to collect more emails
 
-## Recent Improvements
+### General Issues
 
-### Email Extraction Quality (v2.0)
+**"Process crashed"**
+- Simply run `python run_free_scraper.py` again
+- Progress is automatically saved
+- Will resume from where it left off
 
-Fixed critical email extraction issues:
-- ✅ Improved regex pattern with proper word boundaries
-- ✅ Better HTML text extraction preserving word boundaries
-- ✅ Strict email validation rejecting malformed emails
-- ✅ Automatic filtering of records without valid emails
-- ✅ Support for Italian and English contact pages
+**"Duplicate emails"**
+- Automatic deduplication in `emails.json`
+- Each email sent only once
+- No manual cleanup needed
 
-**Results**: 100% email accuracy with zero malformed emails
+## 🎯 Tips for Best Results
 
-See `EMAIL_EXTRACTION_IMPROVEMENTS.md` for detailed technical information.
+1. **Let it run continuously** - Both scraper and sender run 24/7
+2. **Monitor logs** - Check daily summaries in log files
+3. **Don't reset progress** - Unless you want to start over
+4. **Backup emails.json** - Contains all your collected emails
+5. **Check Gmail quota** - Make sure you're not hitting other limits
 
-## Support
+## 🔒 Safety Features
 
-For issues or questions:
-1. Check the log files for error details
-2. Run the test suite to verify setup
-3. Review the configuration settings
-4. Ensure your Google Maps API key is properly configured
-5. See `EMAIL_EXTRACTION_IMPROVEMENTS.md` for email extraction details
+✅ **Rate Limiting** - Prevents IP bans (10/min, 5000/day)
+✅ **Duplicate Protection** - Each email sent only once
+✅ **24h Auto-Wait** - Automatic Gmail limit handling
+✅ **Progress Tracking** - Never lose your work
+✅ **Error Handling** - Graceful failure recovery
+✅ **Daily Logging** - Comprehensive daily summaries
+
+## 📊 Current Status
+
+**Keywords:** 446 total
+- General agencies: 214 keywords
+- London specialists: 232 keywords
+
+**Locations:** 237 Italian cities
+
+**Search Combinations:** 105,702 total
+
+**Language Mix:** ~50% Italian, ~50% English
+
+## 🎉 Success Metrics
+
+After running for a few days, you should see:
+- ✅ Thousands of businesses scraped
+- ✅ Thousands of unique emails collected
+- ✅ Hundreds of emails sent daily (up to 400/day)
+- ✅ Detailed logs for analysis
+- ✅ Automatic progress tracking
+
+**Happy scraping! 🚀**

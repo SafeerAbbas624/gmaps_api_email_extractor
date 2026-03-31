@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Preview - 15 Message Variations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .email-list {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .email-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .email-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .email-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .email-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .email-subject {
+            flex: 1;
+            margin-left: 15px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .email-content {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .email-content p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .email-content ul {
+            margin: 12px 0 12px 20px;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .email-content li {
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+        
+        .email-content strong {
+            color: #667eea;
+        }
+        
+        .email-footer {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .toggle-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s;
+        }
+        
+        .toggle-btn:hover {
+            background: #764ba2;
+        }
+        
+        .email-plain {
+            display: none;
+            background: #f5f5f5;
+            padding: 15px;
+            border-top: 1px solid #e0e0e0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #333;
+        }
+        
+        .email-plain.show {
+            display: block;
+        }
+        
+        .stats {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .stats h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .stat-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📧 Email Preview - 15 Message Variations</h1>
+            <p>See exactly how your emails will appear in Gmail inbox</p>
+        </div>
+        
+        <div class="stats">
+            <h2>📊 Campaign Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label">Total Messages</div>
+                    <div class="stat-value">15</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Rate Limiting</div>
+                    <div class="stat-value">2 min</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Format</div>
+                    <div class="stat-value">HTML+Text</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Unique Subjects</div>
+                    <div class="stat-value">15</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="email-list" id="emailList"></div>
+    </div>
+    
+    <script>
+        // Email messages data
+        const emails = [
+            {
+                subject: "Full-Stack Developer Available for Projects - Python, Flutter, Next.js & Node.js",
+                html: "<html><body style=\"font-family: Arial, sans-serif; color: #333;\"><p>Hello,</p><p>I'm <strong>Safeer Abbas</strong>, a full-stack developer specializing in Python, Flutter, Next.js, and Node.js development.</p><p>I noticed your company and wanted to reach out about potential collaboration opportunities. I offer professional development services including:</p><ul><li>Web Application Development (Next.js, React, Node.js)</li><li>Mobile App Development (Flutter - iOS & Android)</li><li>Python Automation & Web Scraping Solutions</li><li>Custom CRM & Business Management Systems</li><li>API Development & Integration</li><li>Data Analytics & Dashboard Development</li></ul><p>With a strong portfolio of completed projects, I deliver reliable, scalable solutions on time and within budget.</p><p>Would you be interested in discussing how I can help with your development needs?</p><p>Portfolio: <a href=\"https://github.com/SafeerAbbas624\">https://github.com/SafeerAbbas624</a></p><p>Best regards,<br><strong>Safeer Abbas</strong><br>Full-Stack Developer</p></body></html>",
+                plain: "Hello,\n\nI'm Safeer Abbas, a full-stack developer specializing in Python, Flutter, Next.js, and Node.js development.\n\nI noticed your company and wanted to reach out about potential collaboration opportunities. I offer professional development services including:\n\n- Web Application Development (Next.js, React, Node.js)\n- Mobile App Development (Flutter - iOS & Android)\n- Python Automation & Web Scraping Solutions\n- Custom CRM & Business Management Systems\n- API Development & Integration\n- Data Analytics & Dashboard Development\n\nWith a strong portfolio of completed projects, I deliver reliable, scalable solutions on time and within budget.\n\nWould you be interested in discussing how I can help with your development needs?\n\nPortfolio: https://github.com/SafeerAbbas624\n\nBest regards,\nSafeer Abbas\nFull-Stack Developer"
+            },
+            {
+                subject: "Looking to Partner? Expert Developer in Python, Flutter & Next.js",
+                html: "<html><body style=\"font-family: Arial, sans-serif; color: #333;\"><p>Hi there,</p><p>My name is <strong>Safeer Abbas</strong>, and I'm a software developer with expertise in Python, Flutter, Next.js, and Node.js.</p><p>I work with businesses like yours to build custom software solutions that solve real problems. My services include:</p><ul><li>Custom Web Applications</li><li>Cross-Platform Mobile Apps (Flutter)</li><li>Automation Tools & Scrapers</li><li>CRM Systems & Dashboards</li><li>API Development & Third-Party Integrations</li></ul><p>I've successfully delivered projects for startups, agencies, and established companies. I'm looking for new partnerships and would love to discuss how I could support your development needs.</p><p>Check out my work: <a href=\"https://github.com/SafeerAbbas624\">https://github.com/SafeerAbbas624</a></p><p>Let me know if you'd like to chat!</p><p>Regards,<br><strong>Safeer Abbas</strong></p></body></html>",
+                plain: "Hi there,\n\nMy name is Safeer Abbas, and I'm a software developer with expertise in Python, Flutter, Next.js, and Node.js.\n\nI work with businesses like yours to build custom software solutions that solve real problems. My services include:\n\n- Custom Web Applications\n- Cross-Platform Mobile Apps (Flutter)\n- Automation Tools & Scrapers\n- CRM Systems & Dashboards\n- API Development & Third-Party Integrations\n\nI've successfully delivered projects for startups, agencies, and established companies. I'm looking for new partnerships and would love to discuss how I could support your development needs.\n\nCheck out my work: https://github.com/SafeerAbbas624\n\nLet me know if you'd like to chat!\n\nRegards,\nSafeer Abbas"
+            },
+            {
+                subject: "Need a Developer? I Specialize in Web Apps, Mobile Apps & Automation",
+                html: "<html><body style=\"font-family: Arial, sans-serif; color: #333;\"><p>Hello,</p><p>I'm reaching out because I believe my development skills could be valuable to your team.</p><p>I'm <strong>Safeer Abbas</strong>, a full-stack developer with experience in:</p><ul><li>Python (automation, scraping, data analysis)</li><li>Flutter (cross-platform mobile apps)</li><li>Next.js/React (modern web applications)</li><li>Node.js (backend APIs and services)</li></ul><p>Whether you need a one-time project completed or ongoing development support, I'm available and ready to help.</p><p>My recent work includes CRM systems, lead management platforms, and various automation tools. You can see examples at: <a href=\"https://github.com/SafeerAbbas624\">https://github.com/SafeerAbbas624</a></p><p>Would you be open to a brief call to discuss your current or upcoming projects?</p><p>Best,<br><strong>Safeer Abbas</strong><br>Full-Stack Developer</p></body></html>",
+                plain: "Hello,\n\nI'm reaching out because I believe my development skills could be valuable to your team.\n\nI'm Safeer Abbas, a full-stack developer with experience in:\n\n- Python (automation, scraping, data analysis)\n- Flutter (cross-platform mobile apps)\n- Next.js/React (modern web applications)\n- Node.js (backend APIs and services)\n\nWhether you need a one-time project completed or ongoing development support, I'm available and ready to help.\n\nMy recent work includes CRM systems, lead management platforms, and various automation tools. You can see examples at: https://github.com/SafeerAbbas624\n\nWould you be open to a brief call to discuss your current or upcoming projects?\n\nBest,\nSafeer Abbas\nFull-Stack Developer"
+            },
+            {
+                subject: "Freelance Developer Available - Web, Mobile & Automation Expertise",
+                html: "<html><body style=\"font-family: Arial, sans-serif; color: #333;\"><p>Hi,</p><p>Are you looking for a reliable developer for your next project?</p><p>I'm <strong>Safeer Abbas</strong>, a freelance full-stack developer offering:</p><ul><li>Web Development: Next.js, React, Node.js, TypeScript</li><li>Mobile Development: Flutter for iOS and Android</li><li>Automation: Python scripts, web scrapers, data pipelines</li><li>Business Tools: Custom CRMs, dashboards, and analytics</li></ul><p>I pride myself on clear communication, meeting deadlines, and delivering quality code.</p><p>I'm currently taking on new projects and would love to discuss how I can help your business.</p><p>Portfolio: <a href=\"https://github.com/SafeerAbbas624\">https://github.com/SafeerAbbas624</a></p><p>Looking forward to connecting,<br><strong>Safeer Abbas</strong></p></body></html>",
+                plain: "Hi,\n\nAre you looking for a reliable developer for your next project?\n\nI'm Safeer Abbas, a freelance full-stack developer offering:\n\n- Web Development: Next.js, React, Node.js, TypeScript\n- Mobile Development: Flutter for iOS and Android\n- Automation: Python scripts, web scrapers, data pipelines\n- Business Tools: Custom CRMs, dashboards, and analytics\n\nI pride myself on clear communication, meeting deadlines, and delivering quality code.\n\nI'm currently taking on new projects and would love to discuss how I can help your business.\n\nPortfolio: https://github.com/SafeerAbbas624\n\nLooking forward to connecting,\nSafeer Abbas"
+            },
+            {
+                subject: "Custom Software Development Services - Let's Build Something Great",
+                html: "<html><body style=\"font-family: Arial, sans-serif; color: #333;\"><p>Hello,</p><p>I came across your company and thought my services might be a good fit for your development needs.</p><p>I'm <strong>Safeer Abbas</strong>, a software developer specializing in:</p><ul><li>Building scalable web applications with Next.js and React</li><li>Creating cross-platform mobile apps using Flutter</li><li>Developing automation solutions with Python</li><li>Designing custom business management systems</li></ul><p>I work with both startups and established companies, providing everything from MVP development to full-scale applications.</p><p>If you have any upcoming projects or need additional development resources, I'd be happy to discuss how I can help.</p><p>See my work: <a href=\"https://github.com/SafeerAbbas624\">https://github.com/SafeerAbbas624</a></p><p>Cheers,<br><strong>Safeer Abbas</strong></p></body></html>",
+                plain: "Hello,\n\nI came across your company and thought my services might be a good fit for your development needs.\n\nI'm Safeer Abbas, a software developer specializing in:\n\n- Building scalable web applications with Next.js and React\n- Creating cross-platform mobile apps using Flutter\n- Developing automation solutions with Python\n- Designing custom business management systems\n\nI work with both startups and established companies, providing everything from MVP development to full-scale applications.\n\nIf you have any upcoming projects or need additional development resources, I'd be happy to discuss how I can help.\n\nSee my work: https://github.com/SafeerAbbas624\n\nCheers,\nSafeer Abbas"
+            },
+            {
+                subject: "Experienced Developer Ready to Help with Your Projects",
+                html: "<html><body style=\"font-family: Arial, sans-serif; color: #333;\"><p>Hello,</p><p>I'm <strong>Safeer Abbas</strong>, a professional developer with years of experience building web and mobile applications.</p><p>My core competencies include:</p><ul><li>Full-stack web development (Next.js, React, Node.js)</li><li>Mobile app development (Flutter)</li><li>Python automation and data solutions</li><li>Custom business software and CRMs</li></ul><p>I'm reaching out to see if you might need development support for any current or future projects. I work well with teams and can adapt to your workflows and requirements.</p><p>Take a look at my portfolio: <a href=\"https://github.com/SafeerAbbas624\">https://github.com/SafeerAbbas624</a></p><p>I'd welcome the opportunity to discuss how I can contribute to your success.</p><p>Best regards,<br><strong>Safeer Abbas</strong></p></body></html>",
+                plain: "Hello,\n\nI'm Safeer Abbas, a professional developer with years of experience building web and mobile applications.\n\nMy core competencies include:\n\n- Full-stack web development (Next.js, React, Node.js)\n- Mobile app development (Flutter)\n- Python automation and data solutions\n- Custom business software and CRMs\n\nI'm reaching out to see if you might need development support for any current or future projects. I work well with teams and can adapt to your workflows and requirements.\n\nTake a look at my portfolio: https://github.com/SafeerAbbas624\n\nI'd welcome the opportunity to discuss how I can contribute to your success.\n\nBest regards,\nSafeer Abbas"
+            },
+            {
+                subject: "Web & Mobile Developer Seeking New Collaboration Opportunities",
+                html: "<html><body style=\"font-family: Arial, sans-serif; color: #333;\"><p>Hi,</p><p>I hope this email finds you well. I'm <strong>Safeer Abbas</strong>, a software developer looking for new project opportunities.</p><p>I specialize in:</p><ul><li>Next.js and React web applications</li><li>Flutter mobile apps (iOS & Android)</li><li>Python-based automation and scraping</li><li>Node.js backend development</li><li>Custom CRM and management systems</li></ul><p>I've worked with agencies, startups, and businesses across various industries. I'm flexible with engagement models - whether you need project-based work, retainer arrangements, or white-label services.</p><p>Portfolio: <a href=\"https://github.com/SafeerAbbas624\">https://github.com/SafeerAbbas624</a></p><p>Would you be interested in learning more about how we could work together?</p><p>Thanks,<br><strong>Safeer Abbas</strong></p></body></html>",
+                plain: "Hi,\n\nI hope this email finds you well. I'm Safeer Abbas, a software developer looking for new project opportunities.\n\nI specialize in:\n\n- Next.js and React web applications\n- Flutter mobile apps (iOS & Android)\n- Python-based automation and scraping\n- Node.js backend development\n- Custom CRM and management systems\n\nI've worked with agencies, startups, and businesses across various industries. I'm flexible with engagement models - whether you need project-based work, retainer arrangements, or white-label services.\n\nPortfolio: https://github.com/SafeerAbbas624\n\nWould you be interested in learning more about how we could work together?\n\nThanks,\nSafeer Abbas"
+            },
+            {
+                subject: "Developer for Hire - Python, Flutter, Next.js Specialist",
+                html: "<html><body style=\"font-family: Arial, sans-serif; color: #333;\"><p>Hello,</p><p>My name is <strong>Safeer Abbas</strong> and I'm a full-stack developer available for new projects.</p><p>What I bring to the table:</p><ul><li>Strong experience with Python, Flutter, Next.js, and Node.js</li><li>Track record of delivering projects on time and within budget</li><li>Clear communication and professional work ethic</li><li>Ability to work independently or as part of your team</li></ul><p>Recent projects include CRM systems, lead management platforms, web scrapers, and mobile applications.</p><p>I'm currently available for both short-term projects and long-term engagements.</p><p>View my work: <a href=\"https://github.com/SafeerAbbas624\">https://github.com/SafeerAbbas624</a></p><p>Would love to hear about your development needs.</p><p>Best,<br><strong>Safeer Abbas</strong></p></body></html>",
+                plain: "Hello,\n\nMy name is Safeer Abbas and I'm a full-stack developer available for new projects.\n\nWhat I bring to the table:\n\n- Strong experience with Python, Flutter, Next.js, and Node.js\n- Track record of delivering projects on time and within budget\n- Clear communication and professional work ethic\n- Ability to work independently or as part of your team\n\nRecent projects include CRM systems, lead management platforms, web scrapers, and mobile applications.\n\nI'm currently available for both short-term projects and long-term engagements.\n\nView my work: https://github.com/SafeerAbbas624\n\nWould love to hear about your development needs.\n\nBest,\nSafeer Abbas"
+            },
+            {
+                subject: "Need Development Help? I'm Here to Assist",
+                html: "<html><body style=\"font-family: Arial, sans-serif; color: #333;\"><p>Hi there,</p><p>I noticed your company and wanted to introduce myself. I'm <strong>Safeer Abbas</strong>, a software developer specializing in building digital products.</p><p>My expertise includes:</p><ul><li>Web apps with Next.js, React, and TypeScript</li><li>Mobile apps with Flutter</li><li>Automation tools with Python</li><li>Backend services with Node.js</li><li>Data analytics and visualization</li></ul><p>I enjoy tackling challenging projects and finding efficient solutions. Whether you're looking to build something new or enhance existing systems, I can help.</p><p>Check out my GitHub: <a href=\"https://github.com/SafeerAbbas624\">https://github.com/SafeerAbbas624</a></p><p>Feel free to reach out if you'd like to discuss potential collaboration.</p><p>Regards,<br><strong>Safeer Abbas</strong></p></body></html>",
+                plain: "Hi there,\n\nI noticed your company and wanted to introduce myself. I'm Safeer Abbas, a software developer specializing in building digital products.\n\nMy expertise includes:\n\n- Web apps with Next.js, React, and TypeScript\n- Mobile apps with Flutter\n- Automation tools with Python\n- Backend services with Node.js\n- Data analytics and visualization\n\nI enjoy tackling challenging projects and finding efficient solutions. Whether you're looking to build something new or enhance existing systems, I can help.\n\nCheck out my GitHub: https://github.com/SafeerAbbas624\n\nFeel free to reach out if you'd like to discuss potential collaboration.\n\nRegards,\nSafeer Abbas"
+            },
+            {
+                subject: "Professional Developer Services - Python, Flutter & Web Technologies",
+                html: "<html><body style=\"font-family: Arial, sans-serif; color: #333;\"><p>Hello,</p><p>I'm <strong>Safeer Abbas</strong>, offering professional software development services.</p><p>I help businesses with:</p><ul><li>Custom web application development</li><li>Cross-platform mobile app development</li><li>Business process automation</li><li>Data extraction and analysis tools</li><li>API development and integration</li></ul><p>My approach is straightforward: understand your requirements, deliver quality work, and maintain clear communication throughout the project.</p><p>I'm open to various collaboration models including fixed-price projects, hourly arrangements, or ongoing retainers.</p><p>See examples of my work: <a href=\"https://github.com/SafeerAbbas624\">https://github.com/SafeerAbbas624</a></p><p>Let me know if you have any projects where I could be of help.</p><p>Best regards,<br><strong>Safeer Abbas</strong><br>Full-Stack Developer</p></body></html>",
+                plain: "Hello,\n\nI'm Safeer Abbas, offering professional software development services.\n\nI help businesses with:\n\n- Custom web application development\n- Cross-platform mobile app development\n- Business process automation\n- Data extraction and analysis tools\n- API development and integration\n\nMy approach is straightforward: understand your requirements, deliver quality work, and maintain clear communication throughout the project.\n\nI'm open to various collaboration models including fixed-price projects, hourly arrangements, or ongoing retainers.\n\nSee examples of my work: https://github.com/SafeerAbbas624\n\nLet me know if you have any projects where I could be of help.\n\nBest regards,\nSafeer Abbas\nFull-Stack Developer"
+            },
+            {
+                subject: "Expand Your Development Capacity - Experienced Full-Stack Developer",
+                html: "<html><body style=\"font-family: Arial, sans-serif; color: #333;\"><p>Hi,</p><p>Do you ever find yourself needing extra development capacity? I might be able to help.</p><p>I'm <strong>Safeer Abbas</strong>, a full-stack developer with expertise in:</p><ul><li>Modern web frameworks (Next.js, React, Node.js)</li><li>Mobile development (Flutter for iOS/Android)</li><li>Python automation and scripting</li><li>Database design and optimization</li><li>Third-party API integrations</li></ul><p>I've helped companies of all sizes deliver their projects successfully. I can work as an extension of your existing team or handle projects independently.</p><p>GitHub: <a href=\"https://github.com/SafeerAbbas624\">https://github.com/SafeerAbbas624</a></p><p>Would you be open to a quick conversation about your development needs?</p><p>Thanks,<br><strong>Safeer Abbas</strong></p></body></html>",
+                plain: "Hi,\n\nDo you ever find yourself needing extra development capacity? I might be able to help.\n\nI'm Safeer Abbas, a full-stack developer with expertise in:\n\n- Modern web frameworks (Next.js, React, Node.js)\n- Mobile development (Flutter for iOS/Android)\n- Python automation and scripting\n- Database design and optimization\n- Third-party API integrations\n\nI've helped companies of all sizes deliver their projects successfully. I can work as an extension of your existing team or handle projects independently.\n\nGitHub: https://github.com/SafeerAbbas624\n\nWould you be open to a quick conversation about your development needs?\n\nThanks,\nSafeer Abbas"
+            },
+            {
+                subject: "Your Next Developer? Expertise in Web, Mobile & Automation",
+                html: "<html><body style=\"font-family: Arial, sans-serif; color: #333;\"><p>Hello,</p><p>I'm exploring new opportunities to work with forward-thinking companies, and I thought I'd reach out.</p><p>I'm <strong>Safeer Abbas</strong>, a developer with a strong background in:</p><ul><li>Building responsive web applications</li><li>Developing cross-platform mobile apps</li><li>Creating automation solutions that save time</li><li>Integrating systems and APIs</li><li>Analyzing and visualizing data</li></ul><p>My goal is always to deliver solutions that actually solve problems and add value to your business.</p><p>Feel free to check out my recent work: <a href=\"https://github.com/SafeerAbbas624\">https://github.com/SafeerAbbas624</a></p><p>If you're looking for development support, I'd love to chat.</p><p>Best,<br><strong>Safeer Abbas</strong></p></body></html>",
+                plain: "Hello,\n\nI'm exploring new opportunities to work with forward-thinking companies, and I thought I'd reach out.\n\nI'm Safeer Abbas, a developer with a strong background in:\n\n- Building responsive web applications\n- Developing cross-platform mobile apps\n- Creating automation solutions that save time\n- Integrating systems and APIs\n- Analyzing and visualizing data\n\nMy goal is always to deliver solutions that actually solve problems and add value to your business.\n\nFeel free to check out my recent work: https://github.com/SafeerAbbas624\n\nIf you're looking for development support, I'd love to chat.\n\nBest,\nSafeer Abbas"
+            },
+            {
+                subject: "Reliable Developer for Your Web & Mobile Projects",
+                html: "<html><body style=\"font-family: Arial, sans-serif; color: #333;\"><p>Hi,</p><p>I wanted to briefly introduce myself and my services.</p><p>I'm <strong>Safeer Abbas</strong>, a software developer focused on delivering practical, working solutions. My tech stack includes:</p><ul><li>Frontend: Next.js, React, TypeScript</li><li>Mobile: Flutter (iOS & Android)</li><li>Backend: Node.js, Python</li><li>Automation: Web scraping, data processing, task automation</li></ul><p>I value reliability and clear communication. When I commit to a project, I see it through.</p><p>Take a look at some of my projects: <a href=\"https://github.com/SafeerAbbas624\">https://github.com/SafeerAbbas624</a></p><p>If you have development needs, let's connect and discuss how I can help.</p><p>Regards,<br><strong>Safeer Abbas</strong><br>Software Developer</p></body></html>",
+                plain: "Hi,\n\nI wanted to briefly introduce myself and my services.\n\nI'm Safeer Abbas, a software developer focused on delivering practical, working solutions. My tech stack includes:\n\n- Frontend: Next.js, React, TypeScript\n- Mobile: Flutter (iOS & Android)\n- Backend: Node.js, Python\n- Automation: Web scraping, data processing, task automation\n\nI value reliability and clear communication. When I commit to a project, I see it through.\n\nTake a look at some of my projects: https://github.com/SafeerAbbas624\n\nIf you have development needs, let's connect and discuss how I can help.\n\nRegards,\nSafeer Abbas\nSoftware Developer"
+            },
+            {
+                subject: "Software Development Partnership Opportunity",
+                html: "<html><body style=\"font-family: Arial, sans-serif; color: #333;\"><p>Hello,</p><p>I'm writing to introduce myself as a potential development partner for your business.</p><p>My name is <strong>Safeer Abbas</strong>, and I offer comprehensive software development services:</p><ul><li>Custom web application development</li><li>Mobile app development with Flutter</li><li>Python-based automation and tools</li><li>API development and system integration</li><li>Data dashboards and analytics</li></ul><p>I've completed numerous projects across different industries and am always looking to build new, lasting professional relationships.</p><p>View my portfolio: <a href=\"https://github.com/SafeerAbbas624\">https://github.com/SafeerAbbas624</a></p><p>I'd appreciate the opportunity to discuss any upcoming projects or ongoing development needs you might have.</p><p>Thank you for your time,<br><strong>Safeer Abbas</strong></p></body></html>",
+                plain: "Hello,\n\nI'm writing to introduce myself as a potential development partner for your business.\n\nMy name is Safeer Abbas, and I offer comprehensive software development services:\n\n- Custom web application development\n- Mobile app development with Flutter\n- Python-based automation and tools\n- API development and system integration\n- Data dashboards and analytics\n\nI've completed numerous projects across different industries and am always looking to build new, lasting professional relationships.\n\nView my portfolio: https://github.com/SafeerAbbas624\n\nI'd appreciate the opportunity to discuss any upcoming projects or ongoing development needs you might have.\n\nThank you for your time,\nSafeer Abbas"
+            },
+            {
+                subject: "Available for Development Projects - Full-Stack Expertise",
+                html: "<html><body style=\"font-family: Arial, sans-serif; color: #333;\"><p>Hi there,</p><p>I hope you're having a great day. I'm <strong>Safeer Abbas</strong>, a full-stack developer reaching out about potential project opportunities.</p><p>My skills cover:</p><ul><li>Web Development: Next.js, React, Node.js, TypeScript</li><li>Mobile Development: Flutter for cross-platform apps</li><li>Automation: Python scripts, scrapers, and bots</li><li>Business Tools: CRMs, dashboards, admin panels</li></ul><p>I work with businesses to transform ideas into functional software. From MVPs to full-scale applications, I can handle the entire development lifecycle.</p><p>See my work here: <a href=\"https://github.com/SafeerAbbas624\">https://github.com/SafeerAbbas624</a></p><p>If you have any projects in mind, I'd be happy to discuss how I could contribute.</p><p>Best regards,<br><strong>Safeer Abbas</strong><br>Full-Stack Developer</p></body></html>",
+                plain: "Hi there,\n\nI hope you're having a great day. I'm Safeer Abbas, a full-stack developer reaching out about potential project opportunities.\n\nMy skills cover:\n\n- Web Development: Next.js, React, Node.js, TypeScript\n- Mobile Development: Flutter for cross-platform apps\n- Automation: Python scripts, scrapers, and bots\n- Business Tools: CRMs, dashboards, admin panels\n\nI work with businesses to transform ideas into functional software. From MVPs to full-scale applications, I can handle the entire development lifecycle.\n\nSee my work here: https://github.com/SafeerAbbas624\n\nIf you have any projects in mind, I'd be happy to discuss how I could contribute.\n\nBest regards,\nSafeer Abbas\nFull-Stack Developer"
+            }
+        ];
+        
+        // Render emails
+        const emailList = document.getElementById('emailList');
+        emails.forEach((email, index) => {
+            const emailDiv = document.createElement('div');
+            emailDiv.className = 'email-item';
+            emailDiv.innerHTML = `
+                <div class="email-header">
+                    <div class="email-number">${index + 1}</div>
+                    <div class="email-subject">${email.subject}</div>
+                </div>
+                <div class="email-content">
+                    ${email.html}
+                </div>
+                <div class="email-footer">
+                    <span>from: xhxhdjdhg1@gmail.com</span>
+                    <button class="toggle-btn" onclick="this.parentElement.parentElement.querySelector('.email-plain').classList.toggle('show')">Show Plain Text</button>
+                </div>
+                <div class="email-plain">${email.plain || ''}</div>
+            `;
+            emailList.appendChild(emailDiv);
+        });
+    </script>
+</body>
+</html>
+
